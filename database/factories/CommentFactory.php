@@ -22,7 +22,7 @@ class CommentFactory extends Factory
 
         return [
             'content' => fake()->paragraph(20),
-            'author_id' => User::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
             'blog_post_id' => $blogPost->id,
             'posted_at' => fake()->dateTimeBetween($blogPost->posted_at),
         ];

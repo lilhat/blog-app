@@ -21,7 +21,7 @@ class BlogPostFactory extends Factory
             
             'title' => fake()->sentence(),
             'content' => fake()->paragraph(60),
-            'author_id' => User::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
             'posted_at' => fake()->dateTime()->format('Y-m-d H:i:s'),
 
         ];
