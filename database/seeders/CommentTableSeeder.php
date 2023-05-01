@@ -15,7 +15,7 @@ class CommentTableSeeder extends Seeder
     {
         $c = new Comment;
         $c->content = "Very useful post! Will be using these tips in my next build.";
-        $c->author_id = 1;
+        $c->user_id = 1;
         $c->blog_post_id = 1;
         $c->posted_at = "2023-03-02 12:10:03";
         $c->save();
