@@ -20,7 +20,18 @@
     <!-- SummerNote -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-
+    <!-- Datatables -->
+    <link href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" >
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" >
+    <style>
+        .dataTables_wrapper .dataTables_paginate .paginate_button{
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        div.dataTables_wrapper div.dataTables_length select{
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
     @include('layouts.inc.admin-navbar')
@@ -43,6 +54,7 @@
     <script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
+    <!-- SummerNote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
@@ -51,6 +63,14 @@
                 height: 150,
             });
             $('.dropdown-toggle').dropdown();
+        });
+    </script>
+    <!-- Datatables -->
+    <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myDataTable').DataTable();
         });
     </script>
 </body>
