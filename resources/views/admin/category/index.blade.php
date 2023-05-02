@@ -8,7 +8,7 @@
 <div class="container-fluid px-4">
     <div class="card mt-4">
         <div class="card-header">
-            <h4>View Category 
+            <h4>View Category
                 <a href="{{ url('admin/add-category') }}" class="btn btn-primary btn-sm float-end">Add Category</a>
             </h4>
         </div>
@@ -25,6 +25,7 @@
                         <th>Image</th>
                         <th>Status</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +38,10 @@
                         </td>
                         <td>{{ $item->status == '1' ? 'Hidden':'Shown' }}</td>
                         <td>
-                            <a href="" class="btn btn-success">Edit</a>    
+                            <a href="{{ url('admin/edit-category/'.$item->id)}}" class="btn btn-success">Edit</a>
+                        </td>
+                        <td>
+                            <a href="{{ url('admin/delete-category/'.$item->id)}}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     @endforeach
