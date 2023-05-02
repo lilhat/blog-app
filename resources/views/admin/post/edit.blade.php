@@ -50,7 +50,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="">Content</label>
-                    <textarea type="text" name="content" rows="5" class="form-control">{!! $post->content !!}</textarea>
+                    <textarea type="text" name="content" id="mySummernote" rows="5" class="form-control">{!! $post->content !!}</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="">Image</label>
