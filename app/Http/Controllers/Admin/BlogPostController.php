@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\Admin\BlogPostFormRequest;
+use Illuminate\Support\Str;
 
 class BlogPostController extends Controller
 {
@@ -32,7 +33,7 @@ class BlogPostController extends Controller
         $post = new BlogPost;
         $post->category_id = $data['category_id'];
         $post->title = $data['title'];
-        $post->slug = $data['slug'];
+        $post->slug = Str::slug($data['slug']);
         $post->content = $data['content'];
 
         if($request->hasfile('image')){
@@ -70,7 +71,7 @@ class BlogPostController extends Controller
         $post = BlogPost::find($post_id);
         $post->category_id = $data['category_id'];
         $post->title = $data['title'];
-        $post->slug = $data['slug'];
+        $post->slug = Str::slug($data['slug']);
         $post->content = $data['content'];
 
         if($request->hasfile('image')){
