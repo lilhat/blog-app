@@ -1,8 +1,36 @@
 li.nav-item {
-    padding: 8px 18px !important;
     font-weight: 600;
 }
 
 .navbar{
     padding: 0px 0px !important;
+}
+
+.card-shadow{
+    box-shadow: 0 2px 8px 0 rgb(0, 0, 0 / 10%);
+    border-radius: 5px;
+}
+
+.background-image{
+    opacity: 20%;
+    width: 350px;
+}
+
+.category-heading{
+    padding: 10px 12px;
+    border-left: 6px solid #000;
+    background-color: #ddd;
+}
+
+.post-heading{
+    font-size: 26px;
+    color: #000;
+}
+
+.post-content{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
