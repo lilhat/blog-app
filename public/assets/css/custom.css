@@ -34,3 +34,11 @@ li.nav-item {
             line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+.post-image{
+    width: 400px;
+}
+
+.post-thumb{
+    width: 150px;
+}

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+
+@section('title', "$category->meta_title")
+@section('meta_description', "$category->meta_description")
+@section('meta_keyword', "$category->meta_keyword")
+
 @section('content')
 
     <!-- Page Header-->
@@ -19,25 +24,28 @@
     <!-- Main Content-->
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7 px-4">
-
-            </div>
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <!-- Post preview-->
                 @forelse ($post as $postitem)
-                    <div class="post-preview">
-                        <a href="{{ url('section/' . $category->slug . '/' . $postitem->slug) }}">
-                            <h3 class="post-title mt-4">{{ $postitem->title }}</h3>
-                        </a>
-                        <h6 class="post-content" style="max-lines:3;">{{ $postitem->content }}</h6>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="">{{ $postitem->user->name }}</a>
-                            on {{ $postitem->created_at->format('d-m-Y') }}
-                        </p>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <a href="{{ url('section/' . $category->slug . '/' . $postitem->slug) }}">
+                                <h3 class="post-title mt-4">{{ $postitem->title }}</h3>
+                            </a>
+                            <h6 class="post-content" style="max-lines:3;">{{ $postitem->content }}</h6>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="">{{ $postitem->user->name }}</a>
+                                on {{ $postitem->created_at->format('d-m-Y') }}
+                            </p>
+
+                        </div>
+                        <div class="col-md-3 text-center m-auto">
+                            <img src="{{ asset('uploads/post/' . $postitem->image) }}" class="post-thumb">
+                        </div>
                     </div>
                     <!-- Divider-->
-                    <hr class="my-4" />
+                    <hr class="my-4"/>
 
                 @empty
                     <div class="card card-shadow mt-4 mb-4">
