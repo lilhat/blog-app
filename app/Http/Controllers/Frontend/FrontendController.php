@@ -11,7 +11,9 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        return view('frontend.index');
+        $all_categories = Category::where('status','0')->get();
+        $latest_posts = BlogPost::where('status', '0')->orderBy('created_at', 'DESC')->get()->take(5);
+        return view('frontend.index', compact('all_categories', 'latest_posts'));
     }
     public function viewCategoryPost($category_slug)
     {

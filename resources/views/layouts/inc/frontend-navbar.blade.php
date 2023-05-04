@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm bg-white">
     <div class="container">
         <a href="/">
             <img src="{{ asset('assets/images/logo.png') }}" style="width:150px;" class="navbar-brand" alt="Logo">

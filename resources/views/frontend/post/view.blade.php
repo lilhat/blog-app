@@ -34,58 +34,33 @@
                     </div>
                 </div>
             </div>
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-4">
-                    <div class="card mt-3">
-                        <div class="card-header">
-                            <h4>Latest Posts</h4>
-                        </div>
-                        <div class="card-body">
-                            @foreach ($latest_posts as $latest_post)
-                                <a href="{{ url('section/'.$latest_post->category->slug.'/'.$latest_post->slug) }}" class="text-decoration-none">
-                                    <h6>{{ $latest_post->title }}</h6>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </article>
-    <!-- Footer-->
-    <footer class="border-top">
-        <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <ul class="list-inline text-center">
-                        <li class="list-inline-item">
-                            <a href="#!">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#!">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#!">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+    <div class="py-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <h4>Latest Posts</h4>
+                    </div>
+                    <hr class="my-4"/>
                 </div>
+                @foreach ($latest_posts as $latest_post_item)
+                    <div class="col-md-3">
+                        <div class="card card-head p-3" style="height:130px;">
+                            <a href="{{ url('section/'.$latest_post_item->category->slug.'/'.$latest_post_item->slug) }}" class="text-decoration-none">
+                                <h6 class="extra-title"  style="height:35px;">{{ $latest_post_item->title }}</h6>
+                            </a>
+                            <a class="text-dark text-decoration-none" href="{{ url('section/'.$latest_post_item->category->slug) }}"><p class="extra-cat">{{ $latest_post_item->category->name }}</p></a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="">{{ $latest_post_item->user->name }}</a>
+                                on {{ $latest_post_item->created_at->format('d-m-Y') }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
-    </footer>
+    </div>
 @endsection
