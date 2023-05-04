@@ -42,3 +42,26 @@ li.nav-item {
 .post-thumb{
     width: 150px;
 }
+
+.owl-nav button.owl-next,
+.owl-nav button.owl-prev{
+    color:#fff !important;
+    margin-left: 10px;
+    background-color: blue !important;
+    border: none !important;
+    font-size: 20px !important;
+    height: 28px;
+    width: 38px !important;
+}
+
+.extra-title{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.extra-cat{
+    opacity: 40%;
+}
