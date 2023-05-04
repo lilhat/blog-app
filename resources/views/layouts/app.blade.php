@@ -27,7 +27,7 @@
 
         @include('layouts.inc.frontend-navbar')
 
-        <main class="">
+        <main class="" style="min-height:100%">
             @yield('content')
         </main>
 

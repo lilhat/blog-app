@@ -23,4 +23,14 @@ class Category extends Model
         'created_by',
 
     ];
+
+    public function blogPosts()
+    {
+        return $this->hasMany(BlogPost::class, 'category_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

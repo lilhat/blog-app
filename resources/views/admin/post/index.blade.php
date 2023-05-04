@@ -5,6 +5,31 @@
 
 @section('content')
 
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ url('admin/delete-post') }}" method="POST">
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Post</h5>
+                    <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="post_delete_id" id="post_id">
+                    <p>Are you sure you want to delete this post?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" id="closeModal" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid px-4">
 
     <div class="card mt-4">
@@ -45,7 +70,8 @@
                             <a href="{{ url('admin/edit-post/'.$item->id)}}" class="btn btn-success">Edit</a>
                         </td>
                         <td>
-                            <a href="{{ url('admin/delete-post/'.$item->id)}}" class="btn btn-danger">Delete</a>
+                            <button type="button" class="btn btn-danger deletePostBtn"
+                            value="{{ $item->id }}">Delete</button>
                         </td>
                     </tr>
                     @endforeach
@@ -55,5 +81,26 @@
     </div>
 
 </div>
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.deletePostBtn', function (e) {
+                e.preventDefault();
+
+                var post_id = $(this).val();
+                $('#post_id').val(post_id);
+                $('#deleteModal').modal('show');
+            });
+            $(document).on('click', '#closeModal', function (e) {
+                e.preventDefault();
+
+                $('#deleteModal').modal('hide');
+            });
+        });
+    </script>
 
 @endsection

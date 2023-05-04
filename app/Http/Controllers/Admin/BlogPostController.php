@@ -99,9 +99,9 @@ class BlogPostController extends Controller
         return redirect('admin/posts')->with('message', 'Blog Post Updated Successfully');
     }
 
-    public function destroy($post_id)
+    public function destroy(Request $request)
     {
-        $post = BlogPost::find($post_id);
+        $post = BlogPost::find($request->post_delete_id);
         if($post)
         {
             $destination = 'uploads/post/'.$post->image;

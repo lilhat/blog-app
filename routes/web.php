@@ -21,14 +21,14 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::post('add-category', [App\Http\Controllers\Admin\CategoryController::class, 'store']);
     Route::get('edit-category/{category_id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit']);
     Route::put('update-category/{category_id}', [App\Http\Controllers\Admin\CategoryController::class, 'update']);
-    Route::get('delete-category/{category_id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy']);
+    Route::post('delete-category', [App\Http\Controllers\Admin\CategoryController::class, 'destroy']);
 
     Route::get('posts', [App\Http\Controllers\Admin\BlogPostController::class, 'index']);
     Route::get('add-post', [App\Http\Controllers\Admin\BlogPostController::class, 'create']);
     Route::post('add-post', [App\Http\Controllers\Admin\BlogPostController::class, 'store']);
     Route::get('edit-post/{post_id}', [App\Http\Controllers\Admin\BlogPostController::class, 'edit']);
     Route::put('update-post/{post_id}', [App\Http\Controllers\Admin\BlogPostController::class, 'update']);
-    Route::get('delete-post/{post_id}', [App\Http\Controllers\Admin\BlogPostController::class, 'destroy']);
+    Route::post('delete-post', [App\Http\Controllers\Admin\BlogPostController::class, 'destroy']);
 
     Route::get('users', [App\Http\Controllers\Admin\UserController::class, 'index']);
     Route::get('user/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'edit']);
