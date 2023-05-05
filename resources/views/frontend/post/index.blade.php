@@ -32,7 +32,7 @@
                             <a href="{{ url('section/' . $category->slug . '/' . $postitem->slug) }}">
                                 <h3 class="post-title mt-4">{{ $postitem->title }}</h3>
                             </a>
-                            <h6 class="post-content" style="max-lines:3;">{{ $postitem->content }}</h6>
+                            <h6 class="post-content" style="max-lines:3;">{{ strip_tags($postitem->content) }}</h6>
                             <p class="post-meta">
                                 Posted by
                                 <a href="">{{ $postitem->user->name }}</a>
