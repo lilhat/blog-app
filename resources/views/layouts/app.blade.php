@@ -27,7 +27,7 @@
 
         @include('layouts.inc.frontend-navbar')
 
-        <main class="" style="min-height:100%">
+        <main class="" style="min-height:90vh">
             @yield('content')
         </main>
 
@@ -38,7 +38,6 @@
 
 
     <script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/carousel.js') }}"></script>
