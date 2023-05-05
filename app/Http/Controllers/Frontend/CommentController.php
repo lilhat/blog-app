@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Response;
 
 class CommentController extends Controller
 {
@@ -32,11 +33,9 @@ class CommentController extends Controller
                 $comment->user_id = Auth::user()->id;
                 $comment->blog_post_id = $request->blog_post_id;
                 date_default_timezone_set("Europe/London");
-                $comment->posted_at = date('y-m-d h:i:s');
+                $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
-                return response()->json([
-                    'bool' => true,
-                ]);
+                return Response::json($comment);
             }
         } else {
             return response()->json([

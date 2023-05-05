@@ -164,6 +164,7 @@
             var time = new Date().toLocaleString().slice(12, 20);
             var dateTime = date + ' ' + time;
             var vm = $(this);
+            window.currentUser = "{{ Auth::user()->name }}";
 
             $.ajax({
                 type: 'POST',
@@ -178,41 +179,41 @@
                     vm.text('Saving...').addClass('disabled');
                 },
                 success: function(res) {
-                    var _html = '<div class="comment-container col-md-12 col-lg-10 col-xl-8">\
-                                            <hr class="mt-4">\
-                                            <div>\
-                                                <div class="d-flex flex-start justify-content-between">\
-                                                    <div>\
-                                                        <h6 class="fw-bold text-primary mb-1"></h6>\
-                                                        <p class="text-muted small mb-0">' + dateTime + '</p>\
-                                                    </div>\
-                                                    @if (Auth::check())\
-                                                        <div>\
-                                                            <button id="editCommentBtn" class="btn btn-primary">Edit</button>\
-                                                            <button id="deleteCommentBtn" value=""\
-                                                                class="btn btn-danger">Delete</button>\
-                                                        </div>\
-                                                    @endif\
-                                                </div>\
-                                                <p class="mt-3 mb-4 pb-2" id="display-comment">' + comment + '</p>\
-                                                <div class="small d-flex justify-content-start">\
-                                                    <a href="#!" class="d-flex align-items-center me-3">\
-                                                        <i class="far fa-thumbs-up me-2"></i>\
-                                                        <p class="mb-0">Like</p>\
-                                                    </a>\
-                                                    <a href="#!" class="d-flex align-items-center me-3">\
-                                                        <i class="far fa-comment-dots me-2"></i>\
-                                                        <p class="mb-0">Comment</p>\
-                                                    </a>\
-                                                    <a href="#!" class="d-flex align-items-center me-3">\
-                                                        <i class="fas fa-share me-2"></i>\
-                                                        <p class="mb-0">Share</p>\
-                                                    </a>\
-                                                </div>\
-                                            </div>\
-                                            <hr class="mt-4">\
-                                    </div>';
-                    if (res.bool == true) {
+                    var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
+                                            <hr class="mt-4">
+                                            <div>
+                                                <div class="d-flex flex-start justify-content-between">
+                                                    <div>
+                                                        <h6 class="fw-bold text-primary mb-1">`+ window.currentUser +`</h6>
+                                                        <p class="text-muted small mb-0">` + res.posted_at + `</p>
+                                                    </div>
+                                                    @if (Auth::check())
+                                                        <div>
+                                                            <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                            <button id="deleteCommentBtn" value="`+ res.id +`"
+                                                                class="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
+                                                <div class="small d-flex justify-content-start">
+                                                    <a href="#!" class="d-flex align-items-center me-3">
+                                                        <i class="far fa-thumbs-up me-2"></i>
+                                                        <p class="mb-0">Like</p>
+                                                    </a>
+                                                    <a href="#!" class="d-flex align-items-center me-3">
+                                                        <i class="far fa-comment-dots me-2"></i>
+                                                        <p class="mb-0">Comment</p>
+                                                    </a>
+                                                    <a href="#!" class="d-flex align-items-center me-3">
+                                                        <i class="fas fa-share me-2"></i>
+                                                        <p class="mb-0">Share</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <hr class="mt-4">
+                                    </div>`;
+                    if (res) {
                         $(".comments").prepend(_html);
                         $("#comment").val('');
                         $(".no-comments").hide();
