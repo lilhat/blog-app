@@ -183,13 +183,13 @@
                                             <div>\
                                                 <div class="d-flex flex-start justify-content-between">\
                                                     <div>\
-                                                        <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>\
+                                                        <h6 class="fw-bold text-primary mb-1"></h6>\
                                                         <p class="text-muted small mb-0">' + dateTime + '</p>\
                                                     </div>\
-                                                    @if (Auth::check() && Auth::id() == $comment->user_id)\
+                                                    @if (Auth::check())\
                                                         <div>\
                                                             <button id="editCommentBtn" class="btn btn-primary">Edit</button>\
-                                                            <button id="deleteCommentBtn" value="{{ $comment->id }}"\
+                                                            <button id="deleteCommentBtn" value=""\
                                                                 class="btn btn-danger">Delete</button>\
                                                         </div>\
                                                     @endif\
@@ -211,7 +211,7 @@
                                                 </div>\
                                             </div>\
                                             <hr class="mt-4">\
-                                        </div>';
+                                    </div>';
                     if (res.bool == true) {
                         $(".comments").prepend(_html);
                         $("#comment").val('');
