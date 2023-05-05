@@ -31,13 +31,41 @@
                     </ul>
                 </li> --}}
                 @php
-                    $categories = App\Models\Category::where('navbar_status', '0')->where('status', '0')->get();
+                    $categories = App\Models\Category::where('navbar_status', '0')
+                        ->where('status', '0')
+                        ->get();
                 @endphp
                 @foreach ($categories as $catitem)
-                <li class="nav-item">
-                    <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url('section/'.$catitem->slug) }}">{{ $catitem->name }}</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4"
+                            href="{{ url('section/' . $catitem->slug) }}">{{ $catitem->name }}</a>
+                    </li>
                 @endforeach
+                @auth
+                    @if (Auth::user()->role_as == '1')
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4 text-info"
+                            href="{{ url('admin/dashboard') }}">Dashboard</a>
+                    </li>
+                    @endif
+                    <li class="nav-item">
+                        <a href="{{ route('logout') }}" class="nav-link mt-3 mx-2 text-white btn btn-danger"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link mt-3 mx-2 text-white btn btn-warning">Log in</a>
+                    </li>
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link mt-3 text-white btn btn-warning">Register</a>
+                        </li>
+                    @endif
+                @endauth
+
             </ul>
         </div>
     </div>
