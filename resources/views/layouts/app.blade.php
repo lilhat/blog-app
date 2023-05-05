@@ -41,5 +41,6 @@
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/carousel.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>
