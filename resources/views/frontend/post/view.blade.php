@@ -39,32 +39,45 @@
                 <hr class="mt-4">
 
                 <section class="comment-section">
-                    <!-- Add comment -->
-                    <div class="container mt-5 my-3 py-3">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-md-12 col-lg-10 col-xl-8">
-                                <div class="card">
-                                    <div class="card-body shadow-sm">
-                                        <form action="" method="POST">
-                                            @csrf
-                                            <div class="d-flex flex-start w-100">
-                                                <div class="form-outline w-100">
-                                                    <input type="hidden" value="{{ $post->id }}" name="post_id"
-                                                        id="post_id">
-                                                    <textarea class="form-control bg-white" id="comment" placeholder="Add a comment..." id="textAreaExample"
-                                                        rows="4"></textarea>
+                    @auth
+                        <!-- Add comment -->
+                        <div class="container mt-5 my-3 py-3">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-12 col-lg-10 col-xl-8">
+                                    <div class="card">
+                                        <div class="card-body shadow-sm">
+                                            <form action="" method="POST">
+                                                @csrf
+                                                <div class="d-flex flex-start w-100">
+                                                    <div class="form-outline w-100">
+                                                        <input type="hidden" value="{{ $post->id }}" name="post_id"
+                                                            id="post_id">
+                                                        <textarea class="form-control bg-white" id="comment" placeholder="Add a comment..." id="textAreaExample"
+                                                            rows="4"></textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="float-end mt-2 pt-1">
-                                                <button type="button" id="addCommentBtn"
-                                                    class="btn btn-primary btn-sm">Post comment</button>
-                                            </div>
-                                        </form>
+                                                <div class="float-end mt-2 pt-1">
+                                                    <button type="button" id="addCommentBtn"
+                                                        class="btn btn-primary btn-sm">Post comment</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="card align-items-center m-auto p-3 shadow-sm" style="width:fit-content;">
+                            <h5 class="text-center">Must be logged in to comment</h5>
+                            <div class="card-body text-center">
+                                <a href="{{ route('login') }}" class="nav-link text-white btn btn-warning" style="width:75px;">Log in</a>
+                                OR
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="nav-link text-white btn btn-warning" style="width:75px;">Register</a>
+                                @endif
+                            </div>
+                        </div>
+                    @endauth
                     <!-- Display comments -->
                     <div class="container my-3 py-3">
                         <div class="comments row d-flex justify-content-center">
@@ -153,41 +166,42 @@
         </div>
     </div>
     <script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}"></script>
-    <script>
-        // Add comment by id
+    @auth
+        <script>
+            // Add comment by id
 
-        $('#addCommentBtn').on('click', function() {
+            $('#addCommentBtn').on('click', function() {
 
-            var comment = $('#comment').val();
-            var post_id = $('#post_id').val();
-            var vm = $(this);
-            window.currentUser = "{{ Auth::user()->name }}";
+                var comment = $('#comment').val();
+                var post_id = $('#post_id').val();
+                var vm = $(this);
+                window.currentUser = "{{ Auth::user()->name }}";
 
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    blog_post_id: post_id,
-                    content: comment,
-                    _token: '{{ csrf_token() }}'
-                },
-                url: "{{ url('add-comment') }}",
-                beforeSend: function() {
-                    vm.text('Saving...').addClass('disabled');
-                },
-                success: function(res) {
-                    var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        blog_post_id: post_id,
+                        content: comment,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    url: "{{ url('add-comment') }}",
+                    beforeSend: function() {
+                        vm.text('Saving...').addClass('disabled');
+                    },
+                    success: function(res) {
+                        var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                             <hr class="mt-4">
                                             <div>
                                                 <div class="d-flex flex-start justify-content-between">
                                                     <div>
-                                                        <h6 class="fw-bold text-primary mb-1">`+ window.currentUser +`</h6>
+                                                        <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
                                                         <p class="text-muted small mb-0">` + res.posted_at + `</p>
                                                     </div>
                                                     @if (Auth::check())
                                                         <div>
                                                             <button id="editCommentBtn" class="btn btn-primary">Edit</button>
-                                                            <button id="deleteCommentBtn" value="`+ res.id +`"
+                                                            <button id="deleteCommentBtn" value="` + res.id + `"
                                                                 class="btn btn-danger">Delete</button>
                                                         </div>
                                                     @endif
@@ -210,47 +224,48 @@
                                             </div>
                                             <hr class="mt-4">
                                     </div>`;
-                    if (res) {
-                        $(".comments").prepend(_html);
-                        $("#comment").val('');
-                        $(".no-comments").hide();
-                    }
-                    vm.text('Post Comment').removeClass('disabled');
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-
-            $(document).on('click', '#deleteCommentBtn', function() {
-
-                if (confirm('Are you sure you want to delete this comment?')) {
-                    var thisClicked = $(this);
-                    var comment_id = thisClicked.val();
-
-
-                    $.ajax({
-                        type: 'POST',
-                        data: {
-                            comment_id: comment_id,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        url: "{{ url('delete-comment') }}",
-                        success: function(res) {
-                            if (res.status == 200) {
-                                thisClicked.closest('.comment-container').remove();
-                                alert(res.message);
-                            } else {
-                                alert(res.message);
-                            }
+                        if (res) {
+                            $(".comments").prepend(_html);
+                            $("#comment").val('');
+                            $(".no-comments").hide();
                         }
-
-
-
-                    });
-                }
+                        vm.text('Post Comment').removeClass('disabled');
+                    }
+                });
             });
-        });
-    </script>
+        </script>
+        <script>
+            $(document).ready(function() {
+
+                $(document).on('click', '#deleteCommentBtn', function() {
+
+                    if (confirm('Are you sure you want to delete this comment?')) {
+                        var thisClicked = $(this);
+                        var comment_id = thisClicked.val();
+
+
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                comment_id: comment_id,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            url: "{{ url('delete-comment') }}",
+                            success: function(res) {
+                                if (res.status == 200) {
+                                    thisClicked.closest('.comment-container').remove();
+                                    alert(res.message);
+                                } else {
+                                    alert(res.message);
+                                }
+                            }
+
+
+
+                        });
+                    }
+                });
+            });
+        </script>
+    @endauth
 @endsection
