@@ -160,9 +160,6 @@
 
             var comment = $('#comment').val();
             var post_id = $('#post_id').val();
-            var date = new Date().toISOString().slice(0, 10);
-            var time = new Date().toLocaleString().slice(12, 20);
-            var dateTime = date + ' ' + time;
             var vm = $(this);
             window.currentUser = "{{ Auth::user()->name }}";
 
