@@ -27,9 +27,6 @@ return new class extends Migration
 
             $table->bigInteger('parent_id')->default('0');
 
-            $table->foreign('parent_id')->references('id')->on('comments')
-                ->onDelete('cascade')->onUpdate('cascade');
-
             $table->datetime('posted_at');
 
             $table->timestamps();
