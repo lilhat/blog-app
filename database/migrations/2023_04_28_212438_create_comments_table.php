@@ -15,13 +15,19 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->bigInteger('user_id')->unsigned();
-            
+
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->bigInteger('blog_post_id')->unsigned();
-            
+
             $table->foreign('blog_post_id')->references('id')->on('blog_posts')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+
+            $table->bigInteger('parent_id')->default('0');
+
+            $table->foreign('parent_id')->references('id')->on('comments')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->datetime('posted_at');
