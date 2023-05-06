@@ -32,7 +32,7 @@ class CommentController extends Controller
                 $comment->content = $request->content;
                 $comment->user_id = Auth::user()->id;
                 $comment->blog_post_id = $request->blog_post_id;
-                date_default_timezone_set("Europe/London");
+                date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
                 return Response::json($comment);
@@ -67,6 +67,42 @@ class CommentController extends Controller
             return response()->json([
                 'status' => 401,
                 'message' => 'Must be logged in to delete comment',
+            ]);
+        }
+    }
+
+    public function reply(Request $request)
+    {
+        if (Auth::check()) {
+            $validator = Validator::make($request->all(), [
+                'content' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'bool' => false,
+                ]);
+            }
+            $parent_comment = Comment::where('id', $request->parent_id)->first();
+            if ($parent_comment) {
+                $post = BlogPost::where('id', $request->blog_post_id)
+                    ->where('status', '0')
+                    ->first();
+                if ($post) {
+                    $comment = new Comment();
+                    $comment->content = $request->content;
+                    $comment->parent_id = $request->parent_id;
+                    $comment->user_id = Auth::user()->id;
+                    $comment->blog_post_id = $request->blog_post_id;
+                    date_default_timezone_set('Europe/London');
+                    $comment->posted_at = date('Y-m-d h:i:s');
+                    $comment->save();
+                    return Response::json($comment);
+                }
+            }
+        } else {
+            return response()->json([
+                'bool' => false,
             ]);
         }
     }

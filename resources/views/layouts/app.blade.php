@@ -20,7 +20,7 @@
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/owl.carousel.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/owl.theme.default.min.css') }}" rel="stylesheet" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
     <div id="app">
@@ -41,6 +41,7 @@
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/carousel.js') }}"></script>
+    <script src="https://kit.fontawesome.com/fa1ecb41b8.js" crossorigin="anonymous"></script>
     @yield('scripts')
 </body>
 </html>

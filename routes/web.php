@@ -14,6 +14,7 @@ Route::get('/section/{category_slug}/{post_slug}', [App\Http\Controllers\Fronten
 
 Route::post('add-comment', [App\Http\Controllers\Frontend\CommentController::class, 'store']);
 Route::post('delete-comment', [App\Http\Controllers\Frontend\CommentController::class, 'destroy']);
+Route::post('reply-comment', [App\Http\Controllers\Frontend\CommentController::class, 'reply']);
 
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
 

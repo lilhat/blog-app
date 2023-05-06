@@ -83,7 +83,7 @@
                     <!-- Display comments -->
                     <div class="container my-3 py-3">
                         <div class="comments row d-flex justify-content-center">
-                            @forelse ($post->comments->reverse() as $comment)
+                            @forelse ($post->comments->where('parent_id', 0)->reverse() as $comment)
                                 <div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                     <hr class="mt-4">
                                     <div>
@@ -108,56 +108,68 @@
                                         </p>
 
                                         <div class="small d-flex justify-content-start">
-                                            <a href="#!" class="d-flex align-items-center me-3">
+                                            <button
+                                                class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
+                                                value="">
                                                 <i class="far fa-thumbs-up me-2"></i>
                                                 <p class="mb-0">Like</p>
-                                            </a>
-                                            <a href="#!" class="d-flex align-items-center me-3">
+                                            </button>
+                                            <button
+                                                class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
+                                                value="{{ $comment->id }}">
                                                 <i class="far fa-comment-dots me-2"></i>
                                                 <p class="mb-0">Reply</p>
-                                            </a>
-                                            <a href="#!" class="d-flex align-items-center me-3">
-                                                <i class="fas fa-share me-2"></i>
-                                                <p class="mb-0">Share</p>
-                                            </a>
+                                            </button>
                                         </div>
-                                        <hr class="mt-4">
-                                        <div class="reply"  style="width:80%;margin-left:20%!important;">
-                                            <div class="d-flex mt-4 justify-content-between">
-                                                <div>
-                                                    <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>
-                                                    <p class="text-muted small mb-0">
-                                                        {{ $comment->posted_at }}
-                                                    </p>
-                                                </div>
-                                                @if (Auth::check() && Auth::id() == $comment->user_id)
-                                                    <div>
-                                                        <button id="editCommentBtn" class="btn btn-primary">Edit</button>
-                                                        <button id="deleteCommentBtn" value="{{ $comment->id }}"
-                                                            class="btn btn-danger">Delete</button>
+
+                                        <hr class="mt-4 comment-bottom">
+                                        <!-- REPLY -->
+                                        <!-- Add comment -->
+                                        <div class="container">
+                                            <div class="reply-section"></div>
+                                        </div>
+
+                                        <div class="reply-container">
+                                            @foreach ($comment->replies as $reply)
+                                                <div class="comment-container">
+                                                    <div class="reply" style="width:80%;margin-left:20%!important;">
+                                                        <div class="d-flex mt-4 justify-content-between">
+                                                            <div>
+                                                                <h6 class="fw-bold text-primary mb-1">
+                                                                    {{ $reply->user->name }}
+                                                                </h6>
+                                                                <p class="text-muted small mb-0">
+                                                                    {{ $reply->posted_at }}
+                                                                </p>
+                                                            </div>
+                                                            @if (Auth::check() && Auth::id() == $reply->user_id)
+                                                                <div>
+                                                                    <button id="editCommentBtn"
+                                                                        class="btn btn-primary">Edit</button>
+                                                                    <button id="deleteCommentBtn"
+                                                                        value="{{ $reply->id }}"
+                                                                        class="btn btn-danger">Delete</button>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
+                                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                            {{ $reply->content }}
+                                                        </p>
+
+
+                                                        <div class="small d-flex justify-content-start">
+                                                            <button
+                                                                class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
+                                                                value="">
+                                                                <i class="far fa-thumbs-up me-2"></i>
+                                                                <p class="mb-0">Like</p>
+                                                            </button>
+                                                        </div>
+                                                        <hr class="mt-4">
                                                     </div>
-                                                @endif
-                                            </div>
-
-                                            <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                                {{ $comment->content }}
-                                            </p>
-
-                                            <div class="small d-flex justify-content-start">
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="far fa-thumbs-up me-2"></i>
-                                                    <p class="mb-0">Like</p>
-                                                </a>
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="far fa-comment-dots me-2"></i>
-                                                    <p class="mb-0">Reply</p>
-                                                </a>
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="fas fa-share me-2"></i>
-                                                    <p class="mb-0">Share</p>
-                                                </a>
-                                            </div>
-                                            <hr class="mt-4">
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +221,7 @@
         <script>
             // Add comment by id
 
-            $('#addCommentBtn').on('click', function() {
+            $(document).on('click', '#addCommentBtn', function() {
 
                 var comment = $('#comment').val();
                 var post_id = $('#post_id').val();
@@ -247,18 +259,16 @@
                                                 </div>
                                                 <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
                                                 <div class="small d-flex justify-content-start">
-                                                    <a href="#!" class="d-flex align-items-center me-3">
+                                                    <button class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
+                                                        value="">
                                                         <i class="far fa-thumbs-up me-2"></i>
                                                         <p class="mb-0">Like</p>
-                                                    </a>
-                                                    <a href="#!" class="d-flex align-items-center me-3">
+                                                    </button>
+                                                    <button class="d-flex align-items-center me-3 replyCommentBtn"
+                                                        value="` + res.id + `">
                                                         <i class="far fa-comment-dots me-2"></i>
-                                                        <p class="mb-0">Comment</p>
-                                                    </a>
-                                                    <a href="#!" class="d-flex align-items-center me-3">
-                                                        <i class="fas fa-share me-2"></i>
-                                                        <p class="mb-0">Share</p>
-                                                    </a>
+                                                        <p class="mb-0">Reply</p>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <hr class="mt-4">
@@ -302,6 +312,112 @@
 
 
                         });
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            // Add comment by id
+
+            $(document).on('click', '.replyCommentBtn', function() {
+
+                var thisClicked = $(this);
+                var parent_id = $('.replyCommentBtn').val();
+                var _html = `<!-- Add comment -->
+                        <div class="container">
+                            <div class="row d-flex justify-content-end">
+                                <div class="col-md-12 col-lg-10 col-xl-8">
+                                    <div class="card">
+                                        <div class="card-body shadow-sm">
+                                            <form action="" method="POST">
+                                                @csrf
+                                                <div class="d-flex flex-start w-100">
+                                                    <div class="form-outline w-100">
+                                                        <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                                        <input type="hidden" value="` + parent_id + `" name="parent_id" id="parent_id">
+                                                        <textarea class="form-control bg-white" id="reply" placeholder="Reply to the comment..." id="textAreaExample"
+                                                            rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="float-end mt-2 pt-1">
+                                                    <button type="button" id="addReplyCommentBtn" class="btn btn-primary btn-sm">Post
+                                                        comment</button>
+                                                    <button type="button" class="btn btn-danger btn-sm cancelCommentBtn">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                $(".reply-section").html("");
+                thisClicked.closest(".comment-container").find('.reply-section').html(_html);
+
+            });
+
+            $(document).on('click', '.cancelCommentBtn', function() {
+                $(".reply-section").html("");
+            });
+
+            $(document).on('click', '#addReplyCommentBtn', function() {
+
+                var thisClicked = $(this);
+                var parent_id = $('#parent_id').val();
+                var post_id = $('#post_id').val();
+                var reply = $('#reply').val();
+                window.currentUser = "{{ Auth::user()->name }}";
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        parent_id: parent_id,
+                        blog_post_id: post_id,
+                        content: reply,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    url: "{{ url('reply-comment') }}",
+                    beforeSend: function() {
+                        thisClicked.text('Saving...').addClass('disabled');
+                    },
+                    success: function(res) {
+                        var _html = `<div class="comment-container">
+                                    <div class="reply" style="width:80%;margin-left:20%!important;">
+                                        <div class="d-flex mt-4 justify-content-between">
+                                            <div>
+                                                <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
+                                                <p class="text-muted small mb-0">
+                                                    ` + res.posted_at + `
+                                                </p>
+                                            </div>
+                                                <div>
+                                                    <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                    <button id="deleteCommentBtn" value="` + res.id + `"
+                                                        class="btn btn-danger">Delete</button>
+                                                </div>
+                                        </div>
+
+                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                            ` + res.content + `
+                                        </p>
+
+
+                                        <div class="small d-flex justify-content-start">
+                                            <button class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
+                                                value="">
+                                                <i class="far fa-thumbs-up me-2"></i>
+                                                <p class="mb-0">Like</p>
+                                            </button>
+                                        </div>
+                                        <hr class="mt-4">
+                                    </div>
+                                </div>`;
+                        if (res) {
+                            $(".reply-container").append(_html);
+                            $("#reply").val('');
+                        }
+                        $(".reply-section").html("");
                     }
                 });
             });
