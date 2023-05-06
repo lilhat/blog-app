@@ -9,6 +9,13 @@ class Like extends Model
 {
     use HasFactory;
 
+    protected $table = 'likes';
+    protected $fillable = [
+        'blog_post_id',
+        'user_id',
+        'comment_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

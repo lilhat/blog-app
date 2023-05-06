@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Comment;
 use App\Models\BlogPost;
+use App\Models\Like;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,59 @@ class CommentController extends Controller
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $comment->save();
                     return Response::json($comment);
+                }
+            }
+        } else {
+            return response()->json([
+                'bool' => false,
+            ]);
+        }
+    }
+
+
+    public function likeStore(Request $request)
+    {
+        if (Auth::check()) {
+            $post = BlogPost::where('id', $request->blog_post_id)
+                ->where('status', '0')
+                ->first();
+            if ($post) {
+                $comment = Comment::where('id', $request->comment_id)
+                ->first();
+                $like = new Like();
+                $like->comment_id = $request->comment_id;
+                $like->user_id = Auth::user()->id;
+                $like->blog_post_id = $request->blog_post_id;
+                $like->save();
+                return response()->json([
+                    'count' => count($comment->likes),
+                ]);
+            }
+        } else {
+            return response()->json([
+                'bool' => false,
+            ]);
+        }
+    }
+
+    public function likeDestroy(Request $request)
+    {
+        if (Auth::check()) {
+            $post = BlogPost::where('id', $request->blog_post_id)
+                ->where('status', '0')
+                ->first();
+            if ($post) {
+                $comment = Comment::where('id', $request->comment_id)
+                ->first();
+                if($comment)
+                {
+                    $like = like::where('comment_id', $request->comment_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->first();
+                    $like->delete();
+                    return response()->json([
+                        'count' => count($comment->likes),
+                    ]);
                 }
             }
         } else {

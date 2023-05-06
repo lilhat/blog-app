@@ -108,140 +108,205 @@
                                         </p>
 
                                         <div class="small d-flex justify-content-start">
-                                            <button
-                                                class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
-                                                value="">
-                                                <i class="far fa-thumbs-up me-2"></i>
-                                                <p class="mb-0">Like</p>
-                                            </button>
-                                            <button
-                                                class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
-                                                value="{{ $comment->id }}">
-                                                <i class="far fa-comment-dots me-2"></i>
-                                                <p class="mb-0">Reply</p>
-                                            </button>
-                                        </div>
-
-                                        <hr class="mt-4 comment-bottom">
-                                        <!-- REPLY -->
-                                        <!-- Add comment -->
-                                        <div class="container">
-                                            <div class="reply-section"></div>
-                                        </div>
-
-                                        <div class="reply-container">
-                                            @foreach ($comment->replies as $reply)
-                                                <div class="comment-container">
-                                                    <div class="reply" style="width:80%;margin-left:20%!important;">
-                                                        <div class="d-flex mt-4 justify-content-between">
-                                                            <div>
-                                                                <h6 class="fw-bold text-primary mb-1">
-                                                                    {{ $reply->user->name }}
-                                                                </h6>
-                                                                <p class="text-muted small mb-0">
-                                                                    {{ $reply->posted_at }}
-                                                                </p>
-                                                            </div>
-                                                            @if (Auth::check() && Auth::id() == $reply->user_id)
-                                                                <div>
-                                                                    <button id="editCommentBtn"
-                                                                        class="btn btn-primary">Edit</button>
-                                                                    <button id="deleteCommentBtn"
-                                                                        value="{{ $reply->id }}"
-                                                                        class="btn btn-danger">Delete</button>
+                                            <div class="d-flex align-items-center">
+                                                <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                <form action="" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                                        @if ($comment->likes)
+                                                            @php $liked = false; @endphp
+                                                            @foreach ($comment->likes as $like)
+                                                                @if ($like->user_id == Auth::id())
+                                                                    <div class="like-container">
+                                                                        <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="{{ $comment->id }}">
+                                                                            <i class="far fa-thumbs-up me-2"></i>
+                                                                            <p class="mb-0">Liked</p>
+                                                                        </button>
+                                                                    </div>
+                                                                    @php $liked = true; @endphp
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
+                                                            @if (!$liked)
+                                                                <div class="like-container">
+                                                                    <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="{{ $comment->id }}">
+                                                                        <i class="far fa-thumbs-up me-2"></i>
+                                                                        <p class="mb-0">Like</p>
+                                                                    </button>
                                                                 </div>
                                                             @endif
-                                                        </div>
-
-                                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                                            {{ $reply->content }}
-                                                        </p>
-
-
-                                                        <div class="small d-flex justify-content-start">
-                                                            <button
-                                                                class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
-                                                                value="">
-                                                                <i class="far fa-thumbs-up me-2"></i>
-                                                                <p class="mb-0">Like</p>
-                                                            </button>
-                                                        </div>
-                                                        <hr class="mt-4">
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                                        @else
+                                                            <div class="like-container">
+                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="{{ $comment->id }}">
+                                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                                    <p class="mb-0">Like</p>
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                </form>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <button
+                                                    class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
+                                                    value="{{ $comment->id }}">
+                                                    <i class="far fa-comment-dots me-2"></i>
+                                                    <p class="mb-0">Reply</p>
+                                                </button>
+                                            </div>
                                         </div>
+
+                                    <hr class="mt-4 comment-bottom">
+                                    <!-- REPLY -->
+                                    <!-- Add comment -->
+                                    <div class="container">
+                                        <div class="reply-section"></div>
+                                    </div>
+
+                                    <div class="reply-container">
+                                        @foreach ($comment->replies as $reply)
+                                            <div class="comment-container">
+                                                <div class="reply" style="width:80%;margin-left:20%!important;">
+                                                    <div class="d-flex mt-4 justify-content-between">
+                                                        <div>
+                                                            <h6 class="fw-bold text-primary mb-1">
+                                                                {{ $reply->user->name }}
+                                                            </h6>
+                                                            <p class="text-muted small mb-0">
+                                                                {{ $reply->posted_at }}
+                                                            </p>
+                                                        </div>
+                                                        @if (Auth::check() && Auth::id() == $reply->user_id)
+                                                            <div>
+                                                                <button id="editCommentBtn"
+                                                                    class="btn btn-primary">Edit</button>
+                                                                <button id="deleteCommentBtn"
+                                                                    value="{{ $reply->id }}"
+                                                                    class="btn btn-danger">Delete</button>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                        {{ $reply->content }}
+                                                    </p>
+
+
+                                                    <div class="small d-flex justify-content-start">
+                                                        <div class="d-flex align-items-center">
+                                                            <h5 class="like-count p-2 mt-2">{{ count($reply->likes) }}</h5>
+                                                            <form action="" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                                                    @if ($reply->likes)
+                                                                        @php $liked = false; @endphp
+                                                                        @foreach ($reply->likes as $like)
+                                                                            @if ($like->user_id == Auth::id())
+                                                                                <div class="like-container">
+                                                                                    <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="{{ $reply->id }}">
+                                                                                        <i class="far fa-thumbs-up me-2"></i>
+                                                                                        <p class="mb-0">Liked</p>
+                                                                                    </button>
+                                                                                </div>
+                                                                                @php $liked = true; @endphp
+                                                                                @break
+                                                                            @endif
+                                                                        @endforeach
+                                                                        @if (!$liked)
+                                                                            <div class="like-container">
+                                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="{{ $reply->id }}">
+                                                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                                                    <p class="mb-0">Like</p>
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                    @else
+                                                                        <div class="like-container">
+                                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="{{ $reply->id }}">
+                                                                                <i class="far fa-thumbs-up me-2"></i>
+                                                                                <p class="mb-0">Like</p>
+                                                                            </button>
+                                                                        </div>
+                                                                    @endif
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-4">
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @empty
-                                <p class="no-comments text-center">No Comments Yet</p>
-                            @endforelse
-                        </div>
+                            </div>
+                        @empty
+                            <p class="no-comments text-center">No Comments Yet</p>
+                        @endforelse
                     </div>
+                </div>
+        </div>
+        </section>
+    </div>
+    </div>
+</article>
+<div class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h4>Latest Posts</h4>
+                </div>
+                <hr class="my-4" />
             </div>
-            </section>
-        </div>
-        </div>
-    </article>
-    <div class="py-4 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="text-center">
-                        <h4>Latest Posts</h4>
+            @foreach ($latest_posts as $latest_post_item)
+                <div class="col-md-3">
+                    <div class="card card-head p-3" style="height:130px;">
+                        <a href="{{ url('section/' . $latest_post_item->category->slug . '/' . $latest_post_item->slug) }}"
+                            class="text-decoration-none">
+                            <h6 class="extra-title" style="height:35px;">{{ $latest_post_item->title }}</h6>
+                        </a>
+                        <a class="text-dark text-decoration-none"
+                            href="{{ url('section/' . $latest_post_item->category->slug) }}">
+                            <p class="extra-cat">{{ $latest_post_item->category->name }}</p>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="">{{ $latest_post_item->user->name }}</a>
+                            on {{ $latest_post_item->created_at->format('d-m-Y') }}
+                        </p>
                     </div>
-                    <hr class="my-4" />
                 </div>
-                @foreach ($latest_posts as $latest_post_item)
-                    <div class="col-md-3">
-                        <div class="card card-head p-3" style="height:130px;">
-                            <a href="{{ url('section/' . $latest_post_item->category->slug . '/' . $latest_post_item->slug) }}"
-                                class="text-decoration-none">
-                                <h6 class="extra-title" style="height:35px;">{{ $latest_post_item->title }}</h6>
-                            </a>
-                            <a class="text-dark text-decoration-none"
-                                href="{{ url('section/' . $latest_post_item->category->slug) }}">
-                                <p class="extra-cat">{{ $latest_post_item->category->name }}</p>
-                            </a>
-                            <p class="post-meta">
-                                Posted by
-                                <a href="">{{ $latest_post_item->user->name }}</a>
-                                on {{ $latest_post_item->created_at->format('d-m-Y') }}
-                            </p>
-                        </div>
-                    </div>
-                @endforeach
-                <div>
-                </div>
+            @endforeach
+            <div>
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}"></script>
-    @auth
-        <script>
-            // Add comment by id
+</div>
+<script src="{{ asset('assets/js/jquery-3.6.4.min.js') }}"></script>
+@auth
+    <!-- Add Comment -->
+    <script>
+        // Add comment by id
 
-            $(document).on('click', '#addCommentBtn', function() {
+        $(document).on('click', '#addCommentBtn', function() {
 
-                var comment = $('#comment').val();
-                var post_id = $('#post_id').val();
-                var vm = $(this);
-                window.currentUser = "{{ Auth::user()->name }}";
+            var comment = $('#comment').val();
+            var post_id = $('#post_id').val();
+            var vm = $(this);
+            window.currentUser = "{{ Auth::user()->name }}";
 
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        blog_post_id: post_id,
-                        content: comment,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    url: "{{ url('add-comment') }}",
-                    beforeSend: function() {
-                        vm.text('Saving...').addClass('disabled');
-                    },
-                    success: function(res) {
-                        var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    blog_post_id: post_id,
+                    content: comment,
+                    _token: '{{ csrf_token() }}'
+                },
+                url: "{{ url('add-comment') }}",
+                beforeSend: function() {
+                    vm.text('Saving...').addClass('disabled');
+                },
+                success: function(res) {
+                    var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                             <hr class="mt-4">
                                             <div>
                                                 <div class="d-flex flex-start justify-content-between">
@@ -259,72 +324,108 @@
                                                 </div>
                                                 <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
                                                 <div class="small d-flex justify-content-start">
-                                                    <button class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
-                                                        value="">
-                                                        <i class="far fa-thumbs-up me-2"></i>
-                                                        <p class="mb-0">Like</p>
-                                                    </button>
-                                                    <button class="d-flex align-items-center me-3 replyCommentBtn"
-                                                        value="` + res.id + `">
-                                                        <i class="far fa-comment-dots me-2"></i>
-                                                        <p class="mb-0">Reply</p>
-                                                    </button>
+                                                    <div class="d-flex align-items-center">
+                                                        <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                        <form action="" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                                                @if ($comment->likes)
+                                                                    @php $liked = false; @endphp
+                                                                    @foreach ($comment->likes as $like)
+                                                                        @if ($like->user_id == Auth::id())
+                                                                            <div class="like-container">
+                                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ res.id +`">
+                                                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                                                    <p class="mb-0">Liked</p>
+                                                                                </button>
+                                                                            </div>
+                                                                            @php $liked = true; @endphp
+                                                                            @break
+                                                                        @endif
+                                                                    @endforeach
+                                                                    @if (!$liked)
+                                                                        <div class="like-container">
+                                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                                <i class="far fa-thumbs-up me-2"></i>
+                                                                                <p class="mb-0">Like</p>
+                                                                            </button>
+                                                                        </div>
+                                                                    @endif
+                                                                @else
+                                                                    <div class="like-container">
+                                                                        <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                            <i class="far fa-thumbs-up me-2"></i>
+                                                                            <p class="mb-0">Like</p>
+                                                                        </button>
+                                                                    </div>
+                                                                @endif
+                                                        </form>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <button
+                                                            class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
+                                                            value="`+ res.id +`">
+                                                            <i class="far fa-comment-dots me-2"></i>
+                                                            <p class="mb-0">Reply</p>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <hr class="mt-4">
                                     </div>`;
-                        if (res) {
-                            $(".comments").prepend(_html);
-                            $("#comment").val('');
-                            $(".no-comments").hide();
-                        }
-                        vm.text('Post Comment').removeClass('disabled');
+                    if (res) {
+                        $(".comments").prepend(_html);
+                        $("#comment").val('');
+                        $(".no-comments").hide();
                     }
-                });
+                    vm.text('Post Comment').removeClass('disabled');
+                }
             });
-        </script>
-        <script>
-            $(document).ready(function() {
+        });
+    </script>
+    <!-- Delete Comment -->
+    <script>
+        $(document).ready(function() {
 
-                $(document).on('click', '#deleteCommentBtn', function() {
+            $(document).on('click', '#deleteCommentBtn', function() {
 
-                    if (confirm('Are you sure you want to delete this comment?')) {
-                        var thisClicked = $(this);
-                        var comment_id = thisClicked.val();
+                if (confirm('Are you sure you want to delete this comment?')) {
+                    var thisClicked = $(this);
+                    var comment_id = thisClicked.val();
 
 
-                        $.ajax({
-                            type: 'POST',
-                            data: {
-                                comment_id: comment_id,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            url: "{{ url('delete-comment') }}",
-                            success: function(res) {
-                                if (res.status == 200) {
-                                    thisClicked.closest('.comment-container').remove();
-                                    alert(res.message);
-                                } else {
-                                    alert(res.message);
-                                }
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            comment_id: comment_id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        url: "{{ url('delete-comment') }}",
+                        success: function(res) {
+                            if (res.status == 200) {
+                                thisClicked.closest('.comment-container').remove();
+                                alert(res.message);
+                            } else {
+                                alert(res.message);
                             }
+                        }
 
 
 
-                        });
-                    }
-                });
+                    });
+                }
             });
-        </script>
+        });
+    </script>
+    <!-- Reply Comment -->
+    <script>
+        // Add comment by id
 
-        <script>
-            // Add comment by id
+        $(document).on('click', '.replyCommentBtn', function() {
 
-            $(document).on('click', '.replyCommentBtn', function() {
-
-                var thisClicked = $(this);
-                var parent_id = $('.replyCommentBtn').val();
-                var _html = `<!-- Add comment -->
+            var thisClicked = $(this);
+            var parent_id = thisClicked.val();
+            var _html = `<!-- Add comment -->
                         <div class="container">
                             <div class="row d-flex justify-content-end">
                                 <div class="col-md-12 col-lg-10 col-xl-8">
@@ -351,38 +452,38 @@
                                 </div>
                             </div>
                         </div>`;
-                $(".reply-section").html("");
-                thisClicked.closest(".comment-container").find('.reply-section').html(_html);
+            $(".reply-section").html("");
+            thisClicked.closest(".comment-container").find('.reply-section').html(_html);
 
-            });
+        });
 
-            $(document).on('click', '.cancelCommentBtn', function() {
-                $(".reply-section").html("");
-            });
+        $(document).on('click', '.cancelCommentBtn', function() {
+            $(".reply-section").html("");
+        });
 
-            $(document).on('click', '#addReplyCommentBtn', function() {
+        $(document).on('click', '#addReplyCommentBtn', function() {
 
-                var thisClicked = $(this);
-                var parent_id = $('#parent_id').val();
-                var post_id = $('#post_id').val();
-                var reply = $('#reply').val();
-                window.currentUser = "{{ Auth::user()->name }}";
+            var thisClicked = $(this);
+            var parent_id = $('#parent_id').val();
+            var post_id = $('#post_id').val();
+            var reply = $('#reply').val();
+            window.currentUser = "{{ Auth::user()->name }}";
 
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        parent_id: parent_id,
-                        blog_post_id: post_id,
-                        content: reply,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    url: "{{ url('reply-comment') }}",
-                    beforeSend: function() {
-                        thisClicked.text('Saving...').addClass('disabled');
-                    },
-                    success: function(res) {
-                        var _html = `<div class="comment-container">
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    parent_id: parent_id,
+                    blog_post_id: post_id,
+                    content: reply,
+                    _token: '{{ csrf_token() }}'
+                },
+                url: "{{ url('reply-comment') }}",
+                beforeSend: function() {
+                    thisClicked.text('Saving...').addClass('disabled');
+                },
+                success: function(res) {
+                    var _html = `<div class="comment-container">
                                     <div class="reply" style="width:80%;margin-left:20%!important;">
                                         <div class="d-flex mt-4 justify-content-between">
                                             <div>
@@ -404,23 +505,147 @@
 
 
                                         <div class="small d-flex justify-content-start">
-                                            <button class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn"
-                                                value="">
-                                                <i class="far fa-thumbs-up me-2"></i>
-                                                <p class="mb-0">Like</p>
-                                            </button>
+                                            <div class="d-flex align-items-center">
+                                                <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                <form action="" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                                        @if ($comment->likes)
+                                                            @php $liked = false; @endphp
+                                                            @foreach ($comment->likes as $like)
+                                                                @if ($like->user_id == Auth::id())
+                                                                    <div class="like-container">
+                                                                        <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ res.id +`">
+                                                                            <i class="far fa-thumbs-up me-2"></i>
+                                                                            <p class="mb-0">Liked</p>
+                                                                        </button>
+                                                                    </div>
+                                                                    @php $liked = true; @endphp
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
+                                                            @if (!$liked)
+                                                                <div class="like-container">
+                                                                    <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                        <i class="far fa-thumbs-up me-2"></i>
+                                                                        <p class="mb-0">Like</p>
+                                                                    </button>
+                                                                </div>
+                                                            @endif
+                                                        @else
+                                                            <div class="like-container">
+                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                                    <p class="mb-0">Like</p>
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                </form>
+                                            </div>
                                         </div>
                                         <hr class="mt-4">
                                     </div>
                                 </div>`;
-                        if (res) {
-                            $(".reply-container").append(_html);
-                            $("#reply").val('');
-                        }
-                        $(".reply-section").html("");
+                    if (res) {
+                        thisClicked.closest(".comment-container").find(".reply-container").append(_html);
+                        $("#reply").val('');
                     }
-                });
+                    $(".reply-section").html("");
+                }
             });
-        </script>
-    @endauth
+        });
+    </script>
+    <!-- Like Comment -->
+    <script>
+        // Add like
+
+        $(document).on('click', '.likeCommentBtn', function() {
+
+            var thisClicked = $(this);
+            var comment_id = thisClicked.closest('.likeCommentBtn').val();
+            var post_id = $('#post_id').val();
+            var vm = thisClicked.closest('form');
+            var container = thisClicked.closest('.like-container');
+            window.currentUser = "{{ Auth::user()->name }}";
+
+
+            if (container.find('.likedCommentBtn').length > 0) {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    blog_post_id: post_id,
+                    comment_id: comment_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                url: "{{ url('add-like') }}",
+                beforeSend: function() {
+                    container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ comment_id +`">
+                                        <i class="far fa-thumbs-up me-2"></i>
+                                        <p class="mb-0">Liking...</p>
+                                    </button>`).addClass('disabled');
+                },
+                success: function(res) {
+                    if (res) {
+                        vm.siblings(".like-count").html(res.count);
+                    }
+                    container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ comment_id +`">
+                                        <i class="far fa-thumbs-up me-2"></i>
+                                        <p class="mb-0">Liked</p>
+                                    </button>`).removeClass('disabled');
+                }
+            });
+
+
+        });
+
+        // Remove like
+
+        $(document).on('click', '.likedCommentBtn', function() {
+
+            var thisClicked = $(this);
+            var comment_id = thisClicked.closest('.likedCommentBtn').val();
+            var post_id = $('#post_id').val();
+            var vm = $(this).closest('form');
+            var container = thisClicked.closest('.like-container');
+            window.currentUser = "{{ Auth::user()->name }}";
+
+            if (container.find('.likeCommentBtn').length > 0) {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    blog_post_id: post_id,
+                    comment_id: comment_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                url: "{{ url('delete-like') }}",
+                beforeSend: function() {
+                    container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ comment_id +`">
+                                        <i class="far fa-thumbs-up me-2"></i>
+                                        <p class="mb-0">Unliking...</p>
+                                    </button>`).removeClass('disabled');
+                },
+                success: function(res) {
+                    if (res) {
+                        vm.siblings(".like-count").html(res.count);
+                    }
+                    container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ comment_id +`">
+                                        <i class="far fa-thumbs-up me-2"></i>
+                                        <p class="mb-0">Like</p>
+                                    </button>`).removeClass('disabled');
+                }
+            });
+
+
+        });
+    </script>
+
+@endauth
 @endsection
