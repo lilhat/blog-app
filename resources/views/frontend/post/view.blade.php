@@ -70,10 +70,12 @@
                         <div class="card align-items-center m-auto p-3 shadow-sm" style="width:fit-content;">
                             <h5 class="text-center">Must be logged in to comment</h5>
                             <div class="card-body text-center">
-                                <a href="{{ route('login') }}" class="nav-link text-white btn btn-warning" style="width:75px;">Log in</a>
+                                <a href="{{ route('login') }}" class="nav-link text-white btn btn-warning"
+                                    style="width:75px;">Log in</a>
                                 OR
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="nav-link text-white btn btn-warning" style="width:75px;">Register</a>
+                                    <a href="{{ route('register') }}" class="nav-link text-white btn btn-warning"
+                                        style="width:75px;">Register</a>
                                 @endif
                             </div>
                         </div>
@@ -112,15 +114,52 @@
                                             </a>
                                             <a href="#!" class="d-flex align-items-center me-3">
                                                 <i class="far fa-comment-dots me-2"></i>
-                                                <p class="mb-0">Comment</p>
+                                                <p class="mb-0">Reply</p>
                                             </a>
                                             <a href="#!" class="d-flex align-items-center me-3">
                                                 <i class="fas fa-share me-2"></i>
                                                 <p class="mb-0">Share</p>
                                             </a>
                                         </div>
+                                        <hr class="mt-4">
+                                        <div class="reply"  style="width:80%;margin-left:20%!important;">
+                                            <div class="d-flex mt-4 justify-content-between">
+                                                <div>
+                                                    <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>
+                                                    <p class="text-muted small mb-0">
+                                                        {{ $comment->posted_at }}
+                                                    </p>
+                                                </div>
+                                                @if (Auth::check() && Auth::id() == $comment->user_id)
+                                                    <div>
+                                                        <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                        <button id="deleteCommentBtn" value="{{ $comment->id }}"
+                                                            class="btn btn-danger">Delete</button>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                {{ $comment->content }}
+                                            </p>
+
+                                            <div class="small d-flex justify-content-start">
+                                                <a href="#!" class="d-flex align-items-center me-3">
+                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                    <p class="mb-0">Like</p>
+                                                </a>
+                                                <a href="#!" class="d-flex align-items-center me-3">
+                                                    <i class="far fa-comment-dots me-2"></i>
+                                                    <p class="mb-0">Reply</p>
+                                                </a>
+                                                <a href="#!" class="d-flex align-items-center me-3">
+                                                    <i class="fas fa-share me-2"></i>
+                                                    <p class="mb-0">Share</p>
+                                                </a>
+                                            </div>
+                                            <hr class="mt-4">
+                                        </div>
                                     </div>
-                                    <hr class="mt-4">
                                 </div>
                             @empty
                                 <p class="no-comments text-center">No Comments Yet</p>
