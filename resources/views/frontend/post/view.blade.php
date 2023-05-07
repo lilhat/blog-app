@@ -94,7 +94,7 @@
                                                     {{ $comment->posted_at }}
                                                 </p>
                                             </div>
-                                            @if (Auth::check() && Auth::id() == $comment->user_id)
+                                            @if (Auth::check() && Auth::id() == $comment->user_id || Auth::id() == '1')
                                                 <div>
                                                     <button id="editCommentBtn" class="btn btn-primary">Edit</button>
                                                     <button id="deleteCommentBtn" value="{{ $comment->id }}"
@@ -175,7 +175,7 @@
                                                                 {{ $reply->posted_at }}
                                                             </p>
                                                         </div>
-                                                        @if (Auth::check() && Auth::id() == $reply->user_id)
+                                                        @if (Auth::check() && Auth::id() == $reply->user_id || Auth::id() == '1')
                                                             <div>
                                                                 <button id="editCommentBtn"
                                                                     class="btn btn-primary">Edit</button>

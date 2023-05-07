@@ -49,7 +49,6 @@ class CommentController extends Controller
     {
         if (Auth::check()) {
             $comment = Comment::where('id', $request->comment_id)
-                ->where('user_id', Auth::user()->id)
                 ->first();
 
             if ($comment) {
