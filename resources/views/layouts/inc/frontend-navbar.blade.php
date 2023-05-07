@@ -48,6 +48,12 @@
                             href="{{ url('admin/dashboard') }}">Dashboard</a>
                     </li>
                     @endif
+                    @if (Auth::user()->role_as == '2')
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4 text-info"
+                            href="{{ url('author/dashboard') }}">Dashboard</a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" class="nav-link mt-3 mx-2 text-white btn btn-danger"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

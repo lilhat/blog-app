@@ -1,6 +1,11 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
+            @if(Request::is('admin*'))
             <a class="navbar-brand ps-3" href="{{ url('admin/dashboard') }}">
+            @endif
+            @if(Request::is('author*'))
+            <a class="navbar-brand ps-3" href="{{ url('author/dashboard') }}">
+            @endif
                 <img src="{{ asset('assets/images/logo.png') }}" style="width:150px;" class="navbar-brand" alt="Logo">
             </a>
             <!-- Sidebar Toggle-->

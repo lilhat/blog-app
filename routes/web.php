@@ -42,3 +42,17 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
 
 
 });
+
+Route::prefix('author')->middleware(['auth', 'isAuthor'])->group(function () {
+
+    Route::get('/dashboard', [App\Http\Controllers\Author\DashboardController::class, 'index']);
+
+    Route::get('category', [App\Http\Controllers\Author\CategoryController::class, 'index']);
+
+    Route::get('posts', [App\Http\Controllers\Author\BlogPostController::class, 'index']);
+    Route::get('add-post', [App\Http\Controllers\Author\BlogPostController::class, 'create']);
+    Route::post('add-post', [App\Http\Controllers\Author\BlogPostController::class, 'store']);
+    Route::get('edit-post/{post_id}', [App\Http\Controllers\Author\BlogPostController::class, 'edit']);
+    Route::put('update-post/{post_id}', [App\Http\Controllers\Author\BlogPostController::class, 'update']);
+    Route::post('delete-post', [App\Http\Controllers\Author\BlogPostController::class, 'destroy']);
+});
