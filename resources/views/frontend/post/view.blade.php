@@ -96,20 +96,23 @@
                                             </div>
                                             @if (Auth::check() && Auth::id() == $comment->user_id || Auth::id() == '1')
                                                 <div>
-                                                    <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                    <input type="hidden" value="{{ $comment->content }}" name="comment_content" id="comment_content">
+                                                    <button id="editCommentBtn" class="btn btn-primary editCommentBtn" value="{{ $comment->id }}">Edit</button>
                                                     <button id="deleteCommentBtn" value="{{ $comment->id }}"
                                                         class="btn btn-danger">Delete</button>
                                                 </div>
                                             @endif
                                         </div>
 
-                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                            {{ $comment->content }}
-                                        </p>
+                                        <div class="comment-area">
+                                            <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                {{ $comment->content }}
+                                            </p>
+                                        </div>
 
                                         <div class="small d-flex justify-content-start">
                                             <div class="d-flex align-items-center">
-                                                <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                <h5 class="like-count p-2 mt-2">{{ count($comment->likes)}}</h5>
                                                 <form action="" method="POST">
                                                     @csrf
                                                     <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
@@ -306,7 +309,8 @@
                     vm.text('Saving...').addClass('disabled');
                 },
                 success: function(res) {
-                    var _html = `<div class="comment-container col-md-12 col-lg-10 col-xl-8">
+                    var _html = `
+                    <div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                             <hr class="mt-4">
                                             <div>
                                                 <div class="d-flex flex-start justify-content-between">
@@ -325,46 +329,22 @@
                                                 <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
                                                 <div class="small d-flex justify-content-start">
                                                     <div class="d-flex align-items-center">
-                                                        <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                        <h5 class="like-count p-2 mt-2">0</h5>
                                                         <form action="" method="POST">
                                                             @csrf
                                                             <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
-                                                                @if ($comment->likes)
-                                                                    @php $liked = false; @endphp
-                                                                    @foreach ($comment->likes as $like)
-                                                                        @if ($like->user_id == Auth::id())
-                                                                            <div class="like-container">
-                                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ res.id +`">
-                                                                                    <i class="far fa-thumbs-up me-2"></i>
-                                                                                    <p class="mb-0">Liked</p>
-                                                                                </button>
-                                                                            </div>
-                                                                            @php $liked = true; @endphp
-                                                                            @break
-                                                                        @endif
-                                                                    @endforeach
-                                                                    @if (!$liked)
-                                                                        <div class="like-container">
-                                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
-                                                                                <i class="far fa-thumbs-up me-2"></i>
-                                                                                <p class="mb-0">Like</p>
-                                                                            </button>
-                                                                        </div>
-                                                                    @endif
-                                                                @else
-                                                                    <div class="like-container">
-                                                                        <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
-                                                                            <i class="far fa-thumbs-up me-2"></i>
-                                                                            <p class="mb-0">Like</p>
-                                                                        </button>
-                                                                    </div>
-                                                                @endif
+                                                            <div class="like-container">
+                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                    <i class="far fa-thumbs-up me-2"></i>
+                                                                    <p class="mb-0">Like</p>
+                                                                </button>
+                                                            </div>
                                                         </form>
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <button
                                                             class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
-                                                            value="`+ res.id +`">
+                                                            value="` + res.id + `">
                                                             <i class="far fa-comment-dots me-2"></i>
                                                             <p class="mb-0">Reply</p>
                                                         </button>
@@ -372,6 +352,10 @@
                                                 </div>
                                             </div>
                                             <hr class="mt-4">
+                                            <div class="container">
+                                                <div class="reply-section"></div>
+                                            </div>
+                                            <div class="reply-container"></div>
                                     </div>`;
                     if (res) {
                         $(".comments").prepend(_html);
@@ -506,40 +490,16 @@
 
                                         <div class="small d-flex justify-content-start">
                                             <div class="d-flex align-items-center">
-                                                <h5 class="like-count p-2 mt-2">{{ count($comment->likes) }}</h5>
+                                                <h5 class="like-count p-2 mt-2">0</h5>
                                                 <form action="" method="POST">
                                                     @csrf
                                                     <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
-                                                        @if ($comment->likes)
-                                                            @php $liked = false; @endphp
-                                                            @foreach ($comment->likes as $like)
-                                                                @if ($like->user_id == Auth::id())
-                                                                    <div class="like-container">
-                                                                        <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ res.id +`">
-                                                                            <i class="far fa-thumbs-up me-2"></i>
-                                                                            <p class="mb-0">Liked</p>
-                                                                        </button>
-                                                                    </div>
-                                                                    @php $liked = true; @endphp
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-                                                            @if (!$liked)
-                                                                <div class="like-container">
-                                                                    <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
-                                                                        <i class="far fa-thumbs-up me-2"></i>
-                                                                        <p class="mb-0">Like</p>
-                                                                    </button>
-                                                                </div>
-                                                            @endif
-                                                        @else
-                                                            <div class="like-container">
-                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
-                                                                    <i class="far fa-thumbs-up me-2"></i>
-                                                                    <p class="mb-0">Like</p>
-                                                                </button>
-                                                            </div>
-                                                        @endif
+                                                        <div class="like-container">
+                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                <i class="far fa-thumbs-up me-2"></i>
+                                                                <p class="mb-0">Like</p>
+                                                            </button>
+                                                        </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -643,6 +603,41 @@
                 }
             });
 
+
+        });
+    </script>
+    <!-- Edit Comment -->
+    <script>
+        $(document).on('click', '.editCommentBtn', function() {
+
+        var thisClicked = $(this);
+        var comment_id = thisClicked.val();
+        var comment_content = thisClicked.closest('#comment_content');
+        var container = thisClicked.closest('.like-container');
+        var _html = `<!-- Add comment -->
+                    <div class="container">
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-md-12 col-lg-10 col-xl-8">
+                                <form action="" method="POST">
+                                    @csrf
+                                    <div class="d-flex flex-start w-100">
+                                        <div class="form-outline w-100">
+                                            <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
+                                            <input type="hidden" value="` + comment_id + `" name="comment_id" id="comment_id">
+                                            <textarea class="form-control bg-white" id="reply" id="textAreaExample"
+                                                rows="2">`+ comment_content + `</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="float-end mt-2 pt-1">
+                                        <button type="button" id="addReplyCommentBtn" class="btn btn-primary btn-sm">Post
+                                            comment</button>
+                                        <button type="button" class="btn btn-danger btn-sm cancelCommentBtn">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>`;
+        thisClicked.closest('.comment-container').find('.comment-area').html(_html);
 
         });
     </script>

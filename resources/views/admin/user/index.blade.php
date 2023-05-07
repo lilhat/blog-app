@@ -33,7 +33,11 @@
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->email }}</td>
+                            @if($item->role_as == '2')
+                            <td>Author</td>
+                            @else
                             <td>{{ $item->role_as == '1' ? 'Admin':'User' }}</td>
+                            @endif
                             <td>
                                 <a href="{{ url('admin/user/'.$item->id)}}" class="btn btn-success">Edit</a>
                             </td>
