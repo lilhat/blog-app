@@ -52,7 +52,7 @@
                                                     <div class="form-outline w-100">
                                                         <input type="hidden" value="{{ $post->id }}" name="post_id"
                                                             id="post_id">
-                                                        <textarea class="form-control bg-white" id="comment" placeholder="Add a comment..." id="textAreaExample"
+                                                        <textarea class="form-control bg-white" id="comment" placeholder="Add a comment..."
                                                             rows="4"></textarea>
                                                     </div>
                                                 </div>
@@ -104,7 +104,7 @@
                                             @endif
                                         </div>
 
-                                        <div class="comment-area">
+                                        <div class="comment-area" val="{{ $comment->content }}">
                                             <p class="mt-3 mb-4 pb-2" id="display-comment">
                                                 {{ $comment->content }}
                                             </p>
@@ -181,7 +181,7 @@
                                                         @if (Auth::check() && Auth::id() == $reply->user_id || Auth::id() == '1')
                                                             <div>
                                                                 <button id="editCommentBtn"
-                                                                    class="btn btn-primary">Edit</button>
+                                                                    class="btn btn-primary editCommentBtn">Edit</button>
                                                                 <button id="deleteCommentBtn"
                                                                     value="{{ $reply->id }}"
                                                                     class="btn btn-danger">Delete</button>
@@ -409,7 +409,7 @@
 
             var thisClicked = $(this);
             var parent_id = thisClicked.val();
-            var _html = `<!-- Add comment -->
+            var _html = `<!-- Reply comment -->
                         <div class="container">
                             <div class="row d-flex justify-content-end">
                                 <div class="col-md-12 col-lg-10 col-xl-8">
@@ -421,7 +421,7 @@
                                                     <div class="form-outline w-100">
                                                         <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
                                                         <input type="hidden" value="` + parent_id + `" name="parent_id" id="parent_id">
-                                                        <textarea class="form-control bg-white" id="reply" placeholder="Reply to the comment..." id="textAreaExample"
+                                                        <textarea class="form-control bg-white" id="reply" placeholder="Reply to the comment..."
                                                             rows="4"></textarea>
                                                     </div>
                                                 </div>
@@ -612,26 +612,25 @@
 
         var thisClicked = $(this);
         var comment_id = thisClicked.val();
-        var comment_content = thisClicked.closest('#comment_content');
+        var comment_content = thisClicked.closest('.comment-container').find('#display-comment').html().trim();
         var container = thisClicked.closest('.like-container');
-        var _html = `<!-- Add comment -->
+        var _html = `<!-- Edit comment -->
                     <div class="container">
                         <div class="row d-flex justify-content-start">
                             <div class="col-md-12 col-lg-10 col-xl-8">
                                 <form action="" method="POST">
                                     @csrf
                                     <div class="d-flex flex-start w-100">
-                                        <div class="form-outline w-100">
+                                        <div class="form-outline w-100 mt-3">
                                             <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
                                             <input type="hidden" value="` + comment_id + `" name="comment_id" id="comment_id">
-                                            <textarea class="form-control bg-white" id="reply" id="textAreaExample"
-                                                rows="2">`+ comment_content + `</textarea>
+                                            <textarea class="form-control bg-white" id="comment-content" rows="2">`+ comment_content + `</textarea>
                                         </div>
                                     </div>
                                     <div class="float-end mt-2 pt-1">
-                                        <button type="button" id="addReplyCommentBtn" class="btn btn-primary btn-sm">Post
+                                        <button type="button" id="addEditCommentBtn" class="btn btn-primary btn-sm">Post
                                             comment</button>
-                                        <button type="button" class="btn btn-danger btn-sm cancelCommentBtn">Cancel</button>
+                                        <button type="button" class="btn btn-danger btn-sm cancelEditCommentBtn">Cancel</button>
                                     </div>
                                 </form>
                             </div>
@@ -640,6 +639,17 @@
         thisClicked.closest('.comment-container').find('.comment-area').html(_html);
 
         });
+
+        $(document).on('click', '.cancelEditCommentBtn', function() {
+
+            var thisClicked = $(this);
+            var comment_content = thisClicked.closest('.comment-container').find('#comment-content').html().trim();
+
+            thisClicked.closest(".comment-area").html(`<p class="mt-3 mb-4 pb-2" id="display-comment">
+                                        `+ comment_content + `
+                                        </p>`);
+        });
+
     </script>
 
 @endauth
