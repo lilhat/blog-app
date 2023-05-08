@@ -39,6 +39,7 @@
                 <hr class="mt-4">
 
                 <section class="comment-section">
+                    <h3 class="text-center">Comments</h3>
                     @auth
                         <!-- Add comment -->
                         <div class="container mt-5 my-3 py-3">
@@ -83,7 +84,7 @@
                     <!-- Display comments -->
                     <div class="container my-3 py-3">
                         <div class="comments row d-flex justify-content-center">
-                            @forelse ($post->comments->where('parent_id', 0)->reverse() as $comment)
+                            @forelse ($post->comments()->where('parent_id', 0)->latest()->paginate(3) as $comment)
                                 <div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                     <hr class="mt-4">
                                     <div>
@@ -246,6 +247,12 @@
                         @empty
                             <p class="no-comments text-center">No Comments Yet</p>
                         @endforelse
+                        <div class="m-auto" style="position: relative;left:42%">
+                            <div class="comment-pagination mt-4 text-center">
+                                {{ $post->comments()->where('parent_id', 0)->latest()->paginate(3)->withQueryString()->links('pagination::simple-bootstrap-5') }}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
         </div>
