@@ -181,6 +181,7 @@
                                                         @if (Auth::check() && Auth::id() == $reply->user_id || Auth::id() == '1')
                                                             <div>
                                                                 <button id="editCommentBtn"
+                                                                    value="{{ $reply->id }}"
                                                                     class="btn btn-primary editCommentBtn">Edit</button>
                                                                 <button id="deleteCommentBtn"
                                                                     value="{{ $reply->id }}"
@@ -189,9 +190,11 @@
                                                         @endif
                                                     </div>
 
-                                                    <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                                        {{ $reply->content }}
-                                                    </p>
+                                                    <div class="comment-area" val="{{ $reply->content }}">
+                                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                            {{ $reply->content }}
+                                                        </p>
+                                                    </div>
 
 
                                                     <div class="small d-flex justify-content-start">
@@ -320,13 +323,15 @@
                                                     </div>
                                                     @if (Auth::check())
                                                         <div>
-                                                            <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                            <button id="editCommentBtn" value="` + res.id + `" class="btn btn-primary editCommentBtn">Edit</button>
                                                             <button id="deleteCommentBtn" value="` + res.id + `"
                                                                 class="btn btn-danger">Delete</button>
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
+                                                <div class="comment-area" val="` + res.content + `">
+                                                    <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
+                                                </div>
                                                 <div class="small d-flex justify-content-start">
                                                     <div class="d-flex align-items-center">
                                                         <h5 class="like-count p-2 mt-2">0</h5>
@@ -477,15 +482,17 @@
                                                 </p>
                                             </div>
                                                 <div>
-                                                    <button id="editCommentBtn" class="btn btn-primary">Edit</button>
+                                                    <button id="editCommentBtn" value="` + res.id + `" class="btn btn-primary editCommentBtn">Edit</button>
                                                     <button id="deleteCommentBtn" value="` + res.id + `"
                                                         class="btn btn-danger">Delete</button>
                                                 </div>
                                         </div>
 
-                                        <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                            ` + res.content + `
-                                        </p>
+                                        <div class="comment-area" val="` + res.content + `">
+                                            <p class="mt-3 mb-4 pb-2" id="display-comment">
+                                                ` + res.content + `
+                                            </p>
+                                        </div>
 
 
                                         <div class="small d-flex justify-content-start">
@@ -628,8 +635,8 @@
                                         </div>
                                     </div>
                                     <div class="float-end mt-2 pt-1">
-                                        <button type="button" id="addEditCommentBtn" class="btn btn-primary btn-sm">Post
-                                            comment</button>
+                                        <button type="button" id="addEditCommentBtn" class="btn btn-primary btn-sm addEditCommentBtn">Accept
+                                            changes</button>
                                         <button type="button" class="btn btn-danger btn-sm cancelEditCommentBtn">Cancel</button>
                                     </div>
                                 </form>
@@ -648,6 +655,38 @@
             thisClicked.closest(".comment-area").html(`<p class="mt-3 mb-4 pb-2" id="display-comment">
                                         `+ comment_content + `
                                         </p>`);
+        });
+
+        $(document).on('click', '.addEditCommentBtn', function() {
+
+            var thisClicked = $(this);
+            var comment_id = $('#comment_id').val();
+            var post_id = $('#post_id').val();
+            var comment_content = $('#comment-content').val();
+            window.currentUser = "{{ Auth::user()->name }}";
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    comment_id: comment_id,
+                    blog_post_id: post_id,
+                    content: comment_content,
+                    _token: '{{ csrf_token() }}'
+                },
+                url: "{{ url('update-comment') }}",
+                beforeSend: function() {
+                    thisClicked.text('Saving...').addClass('disabled');
+                },
+                success: function(res) {
+                    if (res) {
+                        thisClicked.closest(".comment-area").html(`<p class="mt-3 mb-4 pb-2" id="display-comment">
+                                        `+ comment_content + `
+                                        </p>`);
+                    }
+                }
+            });
+
         });
 
     </script>

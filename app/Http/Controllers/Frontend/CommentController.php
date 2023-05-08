@@ -71,7 +71,7 @@ class CommentController extends Controller
         }
     }
 
-    public function reply(Request $request)
+    public function replyStore(Request $request)
     {
         if (Auth::check()) {
             $validator = Validator::make($request->all(), [
@@ -153,6 +153,41 @@ class CommentController extends Controller
                     ]);
                 }
             }
+        } else {
+            return response()->json([
+                'bool' => false,
+            ]);
+        }
+    }
+
+
+    public function update(Request $request)
+    {
+        if (Auth::check()) {
+            $validator = Validator::make($request->all(), [
+                'content' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'bool' => false,
+                ]);
+            }
+            $comment = Comment::where('id', $request->comment_id)->first();
+            if ($comment) {
+
+                $comment->content = $request->content;
+                $comment->update();
+                return response()->json([
+                    'bool' => true,
+                ]);
+
+            } else {
+                return response()->json([
+                    'bool' => false,
+                ]);
+            }
+
         } else {
             return response()->json([
                 'bool' => false,
