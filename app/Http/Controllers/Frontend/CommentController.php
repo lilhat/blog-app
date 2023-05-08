@@ -36,7 +36,15 @@ class CommentController extends Controller
                 date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
-                return Response::json($comment);
+                return response()->json([
+                    'bool' => true,
+                    'comment' => $comment,
+                ]);
+            } else {
+                return response()->json([
+                    'bool' => false,
+                    'message' => 'Post not found',
+                ]);
             }
         } else {
             return response()->json([
@@ -97,12 +105,26 @@ class CommentController extends Controller
                     date_default_timezone_set('Europe/London');
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $comment->save();
-                    return Response::json($comment);
+                    return response()->json([
+                        'bool' => true,
+                        'comment' => $comment,
+                    ]);
+                } else {
+                    return response()->json([
+                        'bool' => false,
+                        'message' => 'Post not found'
+                    ]);
                 }
+            } else {
+                return response()->json([
+                    'bool' => false,
+                    'message' => 'Comment not found'
+                ]);
             }
         } else {
             return response()->json([
                 'bool' => false,
+                'message' => 'Must be logged in'
             ]);
         }
     }
@@ -123,12 +145,19 @@ class CommentController extends Controller
                 $like->blog_post_id = $request->blog_post_id;
                 $like->save();
                 return response()->json([
+                    'bool' => true,
                     'count' => count($comment->likes),
+                ]);
+            } else {
+                return response()->json([
+                    'bool' => false,
+                    'message' => 'Post not found',
                 ]);
             }
         } else {
             return response()->json([
                 'bool' => false,
+                'message' => 'Must be logged in',
             ]);
         }
     }
@@ -149,13 +178,25 @@ class CommentController extends Controller
                     ->first();
                     $like->delete();
                     return response()->json([
+                        'bool' => true,
                         'count' => count($comment->likes),
                     ]);
+                } else {
+                    return response()->json([
+                        'bool' => false,
+                        'message' => 'Comment not found',
+                    ]);
                 }
+            } else {
+                return response()->json([
+                    'bool' => false,
+                    'message' => 'Post not found',
+                ]);
             }
         } else {
             return response()->json([
                 'bool' => false,
+                'message' => 'Must be logged in',
             ]);
         }
     }
@@ -171,6 +212,7 @@ class CommentController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'bool' => false,
+                    'message' => 'Comment must be valid',
                 ]);
             }
             $comment = Comment::where('id', $request->comment_id)->first();
@@ -180,17 +222,20 @@ class CommentController extends Controller
                 $comment->update();
                 return response()->json([
                     'bool' => true,
+                    'message' => 'Comment updated successfully',
                 ]);
 
             } else {
                 return response()->json([
                     'bool' => false,
+                    'message' => 'Comment not found',
                 ]);
             }
 
         } else {
             return response()->json([
                 'bool' => false,
+                'message' => 'Must be logged in',
             ]);
         }
     }

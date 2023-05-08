@@ -319,18 +319,18 @@
                                                 <div class="d-flex flex-start justify-content-between">
                                                     <div>
                                                         <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
-                                                        <p class="text-muted small mb-0">` + res.posted_at + `</p>
+                                                        <p class="text-muted small mb-0">` + res.comment.posted_at + `</p>
                                                     </div>
                                                     @if (Auth::check())
                                                         <div>
-                                                            <button id="editCommentBtn" value="` + res.id + `" class="btn btn-primary editCommentBtn">Edit</button>
-                                                            <button id="deleteCommentBtn" value="` + res.id + `"
+                                                            <button id="editCommentBtn" value="` + res.comment.id + `" class="btn btn-primary editCommentBtn">Edit</button>
+                                                            <button id="deleteCommentBtn" value="` + res.comment.id + `"
                                                                 class="btn btn-danger">Delete</button>
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <div class="comment-area" val="` + res.content + `">
-                                                    <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.content + `</p>
+                                                <div class="comment-area" val="` + res.comment.content + `">
+                                                    <p class="mt-3 mb-4 pb-2" id="display-comment">` + res.comment.content + `</p>
                                                 </div>
                                                 <div class="small d-flex justify-content-start">
                                                     <div class="d-flex align-items-center">
@@ -339,7 +339,7 @@
                                                             @csrf
                                                             <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
                                                             <div class="like-container">
-                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                                <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.comment.id +`">
                                                                     <i class="far fa-thumbs-up me-2"></i>
                                                                     <p class="mb-0">Like</p>
                                                                 </button>
@@ -349,7 +349,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <button
                                                             class="d-flex btn btn-primary rounded align-items-center me-3 replyCommentBtn"
-                                                            value="` + res.id + `">
+                                                            value="` + res.comment.id + `">
                                                             <i class="far fa-comment-dots me-2"></i>
                                                             <p class="mb-0">Reply</p>
                                                         </button>
@@ -362,10 +362,12 @@
                                             </div>
                                             <div class="reply-container"></div>
                                     </div>`;
-                    if (res) {
+                    if (res.bool) {
                         $(".comments").prepend(_html);
                         $("#comment").val('');
                         $(".no-comments").hide();
+                    } else {
+                        alert(res.message);
                     }
                     vm.text('Post Comment').removeClass('disabled');
                 }
@@ -478,19 +480,19 @@
                                             <div>
                                                 <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
                                                 <p class="text-muted small mb-0">
-                                                    ` + res.posted_at + `
+                                                    ` + res.comment.posted_at + `
                                                 </p>
                                             </div>
                                                 <div>
-                                                    <button id="editCommentBtn" value="` + res.id + `" class="btn btn-primary editCommentBtn">Edit</button>
-                                                    <button id="deleteCommentBtn" value="` + res.id + `"
+                                                    <button id="editCommentBtn" value="` + res.comment.id + `" class="btn btn-primary editCommentBtn">Edit</button>
+                                                    <button id="deleteCommentBtn" value="` + res.comment.id + `"
                                                         class="btn btn-danger">Delete</button>
                                                 </div>
                                         </div>
 
-                                        <div class="comment-area" val="` + res.content + `">
+                                        <div class="comment-area" val="` + res.comment.content + `">
                                             <p class="mt-3 mb-4 pb-2" id="display-comment">
-                                                ` + res.content + `
+                                                ` + res.comment.content + `
                                             </p>
                                         </div>
 
@@ -502,7 +504,7 @@
                                                     @csrf
                                                     <input type="hidden" value="{{ $post->id }}" name="post_id" id="post_id">
                                                         <div class="like-container">
-                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.id +`">
+                                                            <button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ res.comment.id +`">
                                                                 <i class="far fa-thumbs-up me-2"></i>
                                                                 <p class="mb-0">Like</p>
                                                             </button>
@@ -513,9 +515,11 @@
                                         <hr class="mt-4">
                                     </div>
                                 </div>`;
-                    if (res) {
+                    if (res.bool) {
                         thisClicked.closest(".comment-container").find(".reply-container").append(_html);
                         $("#reply").val('');
+                    } else {
+                        alert(res.message);
                     }
                     $(".reply-section").html("");
                 }
@@ -556,8 +560,10 @@
                                     </button>`).addClass('disabled');
                 },
                 success: function(res) {
-                    if (res) {
+                    if (res.bool) {
                         vm.siblings(".like-count").html(res.count);
+                    } else {
+                        alert(res.message);
                     }
                     container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likedCommentBtn" value="`+ comment_id +`">
                                         <i class="far fa-thumbs-up me-2"></i>
@@ -600,8 +606,10 @@
                                     </button>`).removeClass('disabled');
                 },
                 success: function(res) {
-                    if (res) {
+                    if (res.bool) {
                         vm.siblings(".like-count").html(res.count);
+                    } else {
+                        alert(res.message);
                     }
                     container.html(`<button type="button" class="d-flex btn btn-primary rounded align-items-center me-3 likeCommentBtn" value="`+ comment_id +`">
                                         <i class="far fa-thumbs-up me-2"></i>
@@ -679,10 +687,12 @@
                     thisClicked.text('Saving...').addClass('disabled');
                 },
                 success: function(res) {
-                    if (res) {
+                    if (res.bool) {
                         thisClicked.closest(".comment-area").html(`<p class="mt-3 mb-4 pb-2" id="display-comment">
                                         `+ comment_content + `
                                         </p>`);
+                    } else {
+                        alert(res.message);
                     }
                 }
             });
