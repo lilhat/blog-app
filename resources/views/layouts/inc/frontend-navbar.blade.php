@@ -78,10 +78,20 @@
                         <span class="badge badge-light bg-warning badge-xs">{{auth()->user()->unreadNotifications->count()}}</span>
                     </a>
                     <ul class="dropdown-menu p-3">
-                                @if (auth()->user()->unreadNotifications)
-                                <li class="d-flex justify-content-center mx-1 my-2">
-                                    <a href="{{route('mark-as-read')}}" class="btn btn-warning btn-sm">Mark All as Read</a>
-                                </li>
+                                @if (auth()->user()->unreadNotifications->count() > 0)
+                                    <li class="d-flex justify-content-center mx-1 my-2">
+                                        <a href="{{route('mark-as-read')}}" class="btn btn-success text-light btn-sm">Mark All Read</a>
+                                    </li>
+                                @endif
+
+                                @if (auth()->user()->Notifications->count() > 0)
+                                    <li class="d-flex justify-content-center mx-1 my-2">
+                                        <a href="{{route('clear-all')}}" class="btn btn-danger btn-sm">Clear All</a>
+                                    </li>
+                                @else
+                                    <li class="d-flex justify-content-center text-center mx-1 my-2">
+                                        <p class="text-secondary">No Notifications</a>
+                                    </li>
                                 @endif
 
                                 @foreach (auth()->user()->unreadNotifications as $notification)

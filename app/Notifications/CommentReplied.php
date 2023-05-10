@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CommentLiked extends Notification
+class CommentReplied extends Notification
 {
     use Queueable;
 
@@ -42,7 +42,7 @@ class CommentLiked extends Notification
      public function toArray(object $notifiable): array
     {
         return [
-            'data' => $this->name.' liked your comment!',
+            'data' => $this->name.' has replied with a comment!',
             'slug' => $this->slug,
         ];
     }
@@ -57,6 +57,5 @@ class CommentLiked extends Notification
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
-
 
 }

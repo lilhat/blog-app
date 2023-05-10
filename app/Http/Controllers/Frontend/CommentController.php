@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\CommentLiked;
+use App\Notifications\CommentReplied;
 use Response;
 
 class CommentController extends Controller
@@ -108,6 +109,9 @@ class CommentController extends Controller
                     date_default_timezone_set('Europe/London');
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $comment->save();
+                    $category = Category::where('id', $post->category_id)->first();
+                    $slug = '/section/' . $category->slug . '/' . $post->slug;
+                    User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                     return response()->json([
                         'bool' => true,
                         'comment' => $comment,
@@ -244,11 +248,5 @@ class CommentController extends Controller
                 'message' => 'Must be logged in',
             ]);
         }
-    }
-
-    public function markAsRead()
-    {
-        Auth::user()->unreadNotifications->markAsRead();
-        return redirect()->back();
     }
 }

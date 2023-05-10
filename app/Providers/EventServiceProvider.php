@@ -7,7 +7,9 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Notifications\CommentLiked;
+use App\Notifications\CommentReplied;
 use App\Listeners\SendCommentLikedNotification;
+use App\Listeners\SendCommentRepliedNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CommentLiked::class => [
         SendCommentLikedNotification::class,
+        ],
+        CommentReplied::class => [
+        SendCommentRepliedNotification::class,
         ],
     ];
 
