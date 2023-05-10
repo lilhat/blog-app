@@ -16,20 +16,6 @@
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li> --}}
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li> --}}
                 @php
                     $categories = App\Models\Category::where('navbar_status', '0')
                         ->where('status', '0')
@@ -41,72 +27,103 @@
                             href="{{ url('section/' . $catitem->slug) }}">{{ $catitem->name }}</a>
                     </li>
                 @endforeach
-                @auth
-                    @if (Auth::user()->role_as == '1')
-                    <li class="nav-item">
-                        <a class="nav-link mt-3 mx-2 text-white btn btn-info"
-                            href="{{ url('admin/dashboard') }}">Dashboard</a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->role_as == '2')
-                    <li class="nav-item">
-                        <a class="nav-link mt-3 mx-2 text-white btn btn-info"
-                            href="{{ url('author/dashboard') }}">Dashboard</a>
-                    </li>
-                    @endif
-                    <li class="nav-item">
-                        <a href="{{ route('logout') }}" class="nav-link mt-3 mx-2 text-white btn btn-danger"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a href="{{ route('login') }}" class="nav-link mt-3 mx-2 text-white btn btn-warning">Log in</a>
-                    </li>
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a href="{{ route('register') }}" class="nav-link mt-3 text-white btn btn-warning">Register</a>
-                        </li>
-                    @endif
-                @endauth
-                @auth
+
                 <li class="nav-item dropdown p-3">
-                    <a id="navbarDropdown" class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        <i class="fa fa-bell"></i>
-                        <span class="badge badge-light bg-warning badge-xs">{{auth()->user()->unreadNotifications->count()}}</span>
+
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa fa-user" aria-hidden="true"></i>
                     </a>
-                    <ul class="dropdown-menu p-3">
-                                @if (auth()->user()->unreadNotifications->count() > 0)
-                                    <li class="d-flex justify-content-center mx-1 my-2">
-                                        <a href="{{route('mark-as-read')}}" class="btn btn-success text-light btn-sm">Mark All Read</a>
-                                    </li>
-                                @endif
-
-                                @if (auth()->user()->Notifications->count() > 0)
-                                    <li class="d-flex justify-content-center mx-1 my-2">
-                                        <a href="{{route('clear-all')}}" class="btn btn-danger btn-sm">Clear All</a>
-                                    </li>
-                                @else
-                                    <li class="d-flex justify-content-center text-center mx-1 my-2">
-                                        <p class="text-secondary">No Notifications</a>
-                                    </li>
-                                @endif
-
-                                @foreach (auth()->user()->unreadNotifications as $notification)
-                                <li class="d-flex justify-content-center mx-1 my-2">
-                                    <a href="{{$notification->data['slug']}}" class="text-dark fw-bold text-decoration-none"><li class="p-1 text-sm-start"> {{$notification->data['data']}}</li></a>
+                    <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                        @auth
+                            <li class="py-1">
+                                <span class="opacity-50">{{ Auth::user()->name }}</span>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url('user/' . Auth::id()) }}">View Content</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        @endauth
+                        @auth
+                            @if (Auth::user()->role_as == '1')
+                                <li class="nav-item">
+                                    <a class="nav-link mt-3 mx-3 text-white btn btn-info"
+                                        href="{{ url('admin/dashboard') }}">Dashboard</a>
                                 </li>
-                                @endforeach
-                                @foreach (auth()->user()->readNotifications as $notification)
-                                <li class="d-flex justify-content-center mx-1 my-2">
-                                    <a href="{{$notification->data['slug']}}" class="text-secondary text-decoration-none"><li class="p-1 text-sm-start text-secondary"> {{$notification->data['data']}}</li></a>
+                            @endif
+                            @if (Auth::user()->role_as == '2')
+                                <li class="nav-item">
+                                    <a class="nav-link mt-3 mx-3 text-white btn btn-info"
+                                        href="{{ url('author/dashboard') }}">Dashboard</a>
                                 </li>
-                                @endforeach
+                            @endif
+                        @endauth
+                        @auth
+                            <li class="nav-item">
+                                <a href="{{ route('logout') }}" class="nav-link mt-3 mx-3 text-white btn btn-danger"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('login') }}" class="nav-link mt-3 mx-3 text-white btn btn-warning">Log
+                                    in</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}"
+                                        class="nav-link mt-3 mx-3 text-white btn btn-warning">Register</a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
                 </li>
+
+
+                @auth
+                    <li class="nav-item dropdown py-3">
+                        <a id="navbarDropdown" class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" v-pre>
+                            <i class="fa fa-bell"></i>
+                            <span
+                                class="badge badge-light bg-warning badge-xs">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        </a>
+                        <ul class="dropdown-menu p-3">
+                            @if (auth()->user()->unreadNotifications->count() > 0)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{ route('mark-as-read') }}" class="btn btn-success text-light btn-sm">Mark
+                                        All Read</a>
+                                </li>
+                            @endif
+
+                            @if (auth()->user()->Notifications->count() > 0)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{ route('clear-all') }}" class="btn btn-danger btn-sm">Clear All</a>
+                                </li>
+                            @else
+                                <li class="d-flex justify-content-center text-center mx-1 my-2">
+                                    <p class="text-secondary">No Notifications</a>
+                                </li>
+                            @endif
+
+                            @foreach (auth()->user()->unreadNotifications as $notification)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{ $notification->data['slug'] }}"
+                                        class="text-dark fw-bold text-decoration-none">
+                                <li class="p-1 text-sm-start"> {{ $notification->data['data'] }}</li></a>
+                    </li>
+                    @endforeach
+                    @foreach (auth()->user()->readNotifications as $notification)
+                        <li class="d-flex justify-content-center mx-1 my-2">
+                            <a href="{{ $notification->data['slug'] }}" class="text-secondary text-decoration-none">
+                        <li class="p-1 text-sm-start text-secondary"> {{ $notification->data['data'] }}</li></a>
+                        </li>
+                    @endforeach
+
                 @endauth
+
 
             </ul>
         </div>

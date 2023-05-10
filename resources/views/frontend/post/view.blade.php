@@ -30,7 +30,7 @@
                             {!! $post->content !!}
                             <p class="post-meta">
                                 Posted by
-                                <a href="">{{ $post->user->name }}</a>
+                                <a href="{{ url('user/'. $post->user->id) }}">{{ $post->user->name }}</a>
                                 on {{ $post->created_at->format('d-m-Y') }}
                             </p>
                         </div>
@@ -90,7 +90,9 @@
                                     <div>
                                         <div class="d-flex flex-start justify-content-between">
                                             <div>
-                                                <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>
+                                                <a href="{{ url('user/'. $comment->user->id) }}">
+                                                    <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>
+                                                </a>
                                                 <p class="text-muted small mb-0">
                                                     {{ $comment->posted_at }}
                                                 </p>
@@ -160,8 +162,8 @@
                                         </div>
 
                                     <hr class="mt-4 comment-bottom">
-                                    <!-- REPLY -->
-                                    <!-- Add comment -->
+
+                                    <!-- REPLIES -->
                                     <div class="container">
                                         <div class="reply-section"></div>
                                     </div>
@@ -172,9 +174,11 @@
                                                 <div class="reply" style="width:80%;margin-left:20%!important;">
                                                     <div class="d-flex mt-4 justify-content-between">
                                                         <div>
-                                                            <h6 class="fw-bold text-primary mb-1">
-                                                                {{ $reply->user->name }}
-                                                            </h6>
+                                                            <a href="{{ url('user/'. $comment->user->id) }}">
+                                                                <h6 class="fw-bold text-primary mb-1">
+                                                                    {{ $reply->user->name }}
+                                                                </h6>
+                                                            </a>
                                                             <p class="text-muted small mb-0">
                                                                 {{ $reply->posted_at }}
                                                             </p>
@@ -325,7 +329,9 @@
                                             <div>
                                                 <div class="d-flex flex-start justify-content-between">
                                                     <div>
-                                                        <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
+                                                        <a href="{{ url('user/'. Auth::id()) }}">
+                                                            <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
+                                                        </a>
                                                         <p class="text-muted small mb-0">` + res.comment.posted_at + `</p>
                                                     </div>
                                                     @if (Auth::check())
@@ -485,7 +491,9 @@
                                     <div class="reply" style="width:80%;margin-left:20%!important;">
                                         <div class="d-flex mt-4 justify-content-between">
                                             <div>
-                                                <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
+                                                <a href="{{ url('user/'. Auth::id()) }}">
+                                                    <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
+                                                </a>
                                                 <p class="text-muted small mb-0">
                                                     ` + res.comment.posted_at + `
                                                 </p>

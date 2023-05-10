@@ -35,7 +35,7 @@
                             <h6 class="post-content" style="max-lines:3;">{{ strip_tags($postitem->content) }}</h6>
                             <p class="post-meta">
                                 Posted by
-                                <a href="">{{ $postitem->user->name }}</a>
+                                <a href="{{ url('user/'. $postitem->user->id) }}">{{ $postitem->user->name }}</a>
                                 on {{ $postitem->created_at->format('d-m-Y') }}
                             </p>
 

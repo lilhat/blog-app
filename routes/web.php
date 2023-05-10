@@ -12,6 +12,8 @@ Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class, 'index
 Route::get('section/{category_slug}', [App\Http\Controllers\Frontend\FrontendController::class, 'viewCategoryPost']);
 Route::get('/section/{category_slug}/{post_slug}', [App\Http\Controllers\Frontend\FrontendController::class, 'viewPost']);
 
+Route::get('/user/{user_id}', [App\Http\Controllers\Frontend\FrontendController::class, 'viewUser']);
+
 Route::post('add-comment', [App\Http\Controllers\Frontend\CommentController::class, 'store']);
 Route::post('delete-comment', [App\Http\Controllers\Frontend\CommentController::class, 'destroy']);
 Route::post('reply-comment', [App\Http\Controllers\Frontend\CommentController::class, 'replyStore']);
