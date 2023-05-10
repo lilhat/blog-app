@@ -18,6 +18,7 @@ Route::post('reply-comment', [App\Http\Controllers\Frontend\CommentController::c
 Route::post('update-comment', [App\Http\Controllers\Frontend\CommentController::class, 'update']);
 Route::post('add-like', [App\Http\Controllers\Frontend\CommentController::class, 'likeStore']);
 Route::post('delete-like', [App\Http\Controllers\Frontend\CommentController::class, 'likeDestroy']);
+Route::get('/mark-as-read', [App\Http\Controllers\Frontend\CommentController::class,'markAsRead'])->name('mark-as-read');
 
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
 

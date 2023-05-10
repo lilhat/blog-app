@@ -71,6 +71,32 @@
                         </li>
                     @endif
                 @endauth
+                @auth
+                <li class="nav-item dropdown p-3">
+                    <a id="navbarDropdown" class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <i class="fa fa-bell"></i>
+                        <span class="badge badge-light bg-warning badge-xs">{{auth()->user()->unreadNotifications->count()}}</span>
+                    </a>
+                    <ul class="dropdown-menu p-3">
+                                @if (auth()->user()->unreadNotifications)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{route('mark-as-read')}}" class="btn btn-warning btn-sm">Mark All as Read</a>
+                                </li>
+                                @endif
+
+                                @foreach (auth()->user()->unreadNotifications as $notification)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{$notification->data['slug']}}" class="text-warning"><li class="p-1 text-sm-start"> {{$notification->data['data']}}</li></a>
+                                </li>
+                                @endforeach
+                                @foreach (auth()->user()->readNotifications as $notification)
+                                <li class="d-flex justify-content-center mx-1 my-2">
+                                    <a href="{{$notification->data['slug']}}" class="text-secondary"><li class="p-1 text-sm-start text-secondary"> {{$notification->data['data']}}</li></a>
+                                </li>
+                                @endforeach
+                    </ul>
+                </li>
+                @endauth
 
             </ul>
         </div>

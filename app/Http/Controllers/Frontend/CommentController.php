@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Comment;
+use App\Models\Category;
 use App\Models\BlogPost;
 use App\Models\Like;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\CommentLiked;
 use Response;
 
 class CommentController extends Controller
@@ -144,6 +147,9 @@ class CommentController extends Controller
                 $like->user_id = Auth::user()->id;
                 $like->blog_post_id = $request->blog_post_id;
                 $like->save();
+                $category = Category::where('id', $post->category_id)->first();
+                $slug = '/section/' . $category->slug . '/' . $post->slug;
+                User::find($comment->user_id)->notify(new CommentLiked(Auth::user()->name, $slug));
                 return response()->json([
                     'bool' => true,
                     'count' => count($comment->likes),
@@ -238,5 +244,11 @@ class CommentController extends Controller
                 'message' => 'Must be logged in',
             ]);
         }
+    }
+
+    public function markAsRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
     }
 }
