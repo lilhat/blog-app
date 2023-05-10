@@ -44,13 +44,13 @@
                 @auth
                     @if (Auth::user()->role_as == '1')
                     <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4 text-info"
+                        <a class="nav-link mt-3 mx-2 text-white btn btn-info"
                             href="{{ url('admin/dashboard') }}">Dashboard</a>
                     </li>
                     @endif
                     @if (Auth::user()->role_as == '2')
                     <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4 text-info"
+                        <a class="nav-link mt-3 mx-2 text-white btn btn-info"
                             href="{{ url('author/dashboard') }}">Dashboard</a>
                     </li>
                     @endif
@@ -96,12 +96,12 @@
 
                                 @foreach (auth()->user()->unreadNotifications as $notification)
                                 <li class="d-flex justify-content-center mx-1 my-2">
-                                    <a href="{{$notification->data['slug']}}" class="text-warning"><li class="p-1 text-sm-start"> {{$notification->data['data']}}</li></a>
+                                    <a href="{{$notification->data['slug']}}" class="text-dark fw-bold text-decoration-none"><li class="p-1 text-sm-start"> {{$notification->data['data']}}</li></a>
                                 </li>
                                 @endforeach
                                 @foreach (auth()->user()->readNotifications as $notification)
                                 <li class="d-flex justify-content-center mx-1 my-2">
-                                    <a href="{{$notification->data['slug']}}" class="text-secondary"><li class="p-1 text-sm-start text-secondary"> {{$notification->data['data']}}</li></a>
+                                    <a href="{{$notification->data['slug']}}" class="text-secondary text-decoration-none"><li class="p-1 text-sm-start text-secondary"> {{$notification->data['data']}}</li></a>
                                 </li>
                                 @endforeach
                     </ul>

@@ -40,6 +40,9 @@ class CommentController extends Controller
                 date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
+                $category = Category::where('id', $post->category_id)->first();
+                $slug = '/section/' . $category->slug . '/' . $post->slug;
+                User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                 return response()->json([
                     'bool' => true,
                     'comment' => $comment,
