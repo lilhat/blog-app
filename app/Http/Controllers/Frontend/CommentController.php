@@ -40,9 +40,11 @@ class CommentController extends Controller
                 date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
-                $category = Category::where('id', $post->category_id)->first();
-                $slug = '/section/' . $category->slug . '/' . $post->slug;
-                User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                if ($post->user_id !== Auth::user()->id) {
+                    $category = Category::where('id', $post->category_id)->first();
+                    $slug = '/section/' . $category->slug . '/' . $post->slug;
+                    User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                }
                 return response()->json([
                     'bool' => true,
                     'comment' => $comment,
@@ -112,9 +114,11 @@ class CommentController extends Controller
                     date_default_timezone_set('Europe/London');
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $comment->save();
-                    $category = Category::where('id', $post->category_id)->first();
-                    $slug = '/section/' . $category->slug . '/' . $post->slug;
-                    User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                    if ($comment->user_id !== Auth::user()->id) {
+                        $category = Category::where('id', $post->category_id)->first();
+                        $slug = '/section/' . $category->slug . '/' . $post->slug;
+                        User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                    }
                     return response()->json([
                         'bool' => true,
                         'comment' => $comment,
@@ -154,9 +158,11 @@ class CommentController extends Controller
                 $like->user_id = Auth::user()->id;
                 $like->blog_post_id = $request->blog_post_id;
                 $like->save();
-                $category = Category::where('id', $post->category_id)->first();
-                $slug = '/section/' . $category->slug . '/' . $post->slug;
-                User::find($comment->user_id)->notify(new CommentLiked(Auth::user()->name, $slug));
+                if ($comment->user_id !== Auth::user()->id) {
+                    $category = Category::where('id', $post->category_id)->first();
+                    $slug = '/section/' . $category->slug . '/' . $post->slug;
+                    User::find($comment->user_id)->notify(new CommentLiked(Auth::user()->name, $slug));
+                }
                 return response()->json([
                     'bool' => true,
                     'count' => count($comment->likes),
