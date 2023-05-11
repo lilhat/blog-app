@@ -41,7 +41,7 @@ class CommentController extends Controller
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $comment->save();
                 if ($post->user_id !== Auth::user()->id) {
-                    $category = Category::where('id', $post->category_id)->first();
+                    $category = $post->categories->first();
                     $slug = '/section/' . $category->slug . '/' . $post->slug;
                     User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                 }
@@ -115,7 +115,7 @@ class CommentController extends Controller
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $comment->save();
                     if ($comment->user_id !== Auth::user()->id) {
-                        $category = Category::where('id', $post->category_id)->first();
+                        $category = $post->categories->first();
                         $slug = '/section/' . $category->slug . '/' . $post->slug;
                         User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                     }
@@ -159,7 +159,7 @@ class CommentController extends Controller
                 $like->blog_post_id = $request->blog_post_id;
                 $like->save();
                 if ($comment->user_id !== Auth::user()->id) {
-                    $category = Category::where('id', $post->category_id)->first();
+                    $category = $post->categories->first();
                     $slug = '/section/' . $category->slug . '/' . $post->slug;
                     User::find($comment->user_id)->notify(new CommentLiked(Auth::user()->name, $slug));
                 }
