@@ -9,6 +9,7 @@ use App\Models\Like;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Frontend\CommentFormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\CommentLiked;
@@ -17,18 +18,9 @@ use Response;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    public function store(CommentFormRequest $request)
     {
         if (Auth::check()) {
-            $validator = Validator::make($request->all(), [
-                'content' => 'required|string',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'bool' => false,
-                ]);
-            }
             $post = BlogPost::where('id', $request->blog_post_id)
                 ->where('status', '0')
                 ->first();
@@ -58,6 +50,7 @@ class CommentController extends Controller
         } else {
             return response()->json([
                 'bool' => false,
+                'message' => 'Must be logged in',
             ]);
         }
     }
@@ -88,18 +81,9 @@ class CommentController extends Controller
         }
     }
 
-    public function replyStore(Request $request)
+    public function replyStore(CommentFormRequest $request)
     {
         if (Auth::check()) {
-            $validator = Validator::make($request->all(), [
-                'content' => 'required|string',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'bool' => false,
-                ]);
-            }
             $parent_comment = Comment::where('id', $request->parent_id)->first();
             if ($parent_comment) {
                 $post = BlogPost::where('id', $request->blog_post_id)
@@ -221,19 +205,9 @@ class CommentController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function update(CommentFormRequest $request)
     {
         if (Auth::check()) {
-            $validator = Validator::make($request->all(), [
-                'content' => 'required|string',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'bool' => false,
-                    'message' => 'Comment must be valid',
-                ]);
-            }
             $comment = Comment::where('id', $request->comment_id)->first();
             if ($comment) {
 
