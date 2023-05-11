@@ -41,7 +41,7 @@
 
         @include('layouts.inc.admin-sidebar')
 
-        <div id="layoutSidenav_content">
+        <div  class="bg-light" id="layoutSidenav_content">
             <main>
 
                 @yield('content')

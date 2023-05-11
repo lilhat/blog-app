@@ -73,7 +73,7 @@
                 <h5 class="fw-bold">Status</h5>
                 <div class="row">
                     <div class="col-md-3 mb-3">
-                        <label for="">Status</label>
+                        <label for="">Hidden</label>
                         <input type="checkbox" name="status">
                     </div>
                     <div class="col-md-6">

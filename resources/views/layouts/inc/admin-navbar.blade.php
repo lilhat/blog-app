@@ -1,4 +1,4 @@
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+<nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
             <!-- Navbar Brand-->
             @if(Request::is('admin*'))
             <a class="navbar-brand ps-3" href="{{ url('admin/dashboard') }}">
