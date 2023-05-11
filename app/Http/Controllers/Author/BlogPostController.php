@@ -23,7 +23,8 @@ class BlogPostController extends Controller
     public function create()
     {
         $category = Category::where('status', '0')->get();
-        return view('author.post.create', compact('category'));
+        $posts = BlogPost::all();
+        return view('author.post.create', compact('category','posts'));
 
     }
     public function store(BlogPostFormRequest $request)
@@ -52,6 +53,16 @@ class BlogPostController extends Controller
         $post->save();
         $post->categories()->attach($data['category_id']);
 
+        if (!empty($data['related_post_id'])) {
+            $relatedPost = BlogPost::find($data['related_post_id']);
+            if ($relatedPost) {
+                $post->relatedBlogPost()->create([
+                    'blog_post_id' => $post->id,
+                    'related_blog_post_id' => $relatedPost->id
+                ]);
+            }
+        }
+
         return redirect('author/posts')->with('message', 'Blog Post Added Successfully');
 
 
@@ -61,7 +72,8 @@ class BlogPostController extends Controller
     {
         $category = Category::where('status','0')->get();
         $post = BlogPost::find($post_id);
-        return view('author.post.edit', compact('post','category'));
+        $posts = BlogPost::all();
+        return view('author.post.edit', compact('post','category','posts'));
     }
 
     public function update(BlogPostFormRequest $request, $post_id)
@@ -96,6 +108,25 @@ class BlogPostController extends Controller
         $post->update();
 
         $post->categories()->sync($data['category_id']);
+
+
+        if (!empty($data['related_post_id'])) {
+            $relatedPost = BlogPost::find($data['related_post_id']);
+            if ($relatedPost) {
+                if($post->relatedBlogPost){
+                    $post->relatedBlogPost()->update([
+                    'blog_post_id' => $post->id,
+                    'related_blog_post_id' => $relatedPost->id
+                ]);
+                } else {
+                    $post->relatedBlogPost()->create([
+                    'blog_post_id' => $post->id,
+                    'related_blog_post_id' => $relatedPost->id
+                    ]);
+                }
+
+            }
+        }
 
         return redirect('author/posts')->with('message', 'Blog Post Updated Successfully');
     }

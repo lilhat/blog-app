@@ -103,6 +103,8 @@ class BlogPostController extends Controller
 
         $post->update();
 
+        $post->categories()->sync($data['category_id']);
+
         if (!empty($data['related_post_id'])) {
             $relatedPost = BlogPost::find($data['related_post_id']);
             if ($relatedPost) {
@@ -120,8 +122,6 @@ class BlogPostController extends Controller
 
             }
         }
-
-        $post->categories()->sync($data['category_id']);
 
         return redirect('admin/posts')->with('message', 'Blog Post Updated Successfully');
     }

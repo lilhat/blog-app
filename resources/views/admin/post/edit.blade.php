@@ -79,7 +79,9 @@
                             <select class="form-control" name="related_post_id" id="related_post_id">
                                 <option value="">-- Select --</option>
                                 @foreach($posts as $postitem)
-                                    <option value="{{ $postitem->id }}" {{ $post->relatedBlogPost ? 'selected' : '' }}>{{ $postitem->title }}</option>
+                                    @if($postitem->id != $post->id)
+                                        <option value="{{ $postitem->id }}" {{ $post->relatedBlogPost && $post->relatedBlogPost->related_blog_post_id == $postitem->id ? 'selected' : '' }}>{{ $postitem->title }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
