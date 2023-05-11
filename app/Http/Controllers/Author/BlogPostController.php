@@ -31,7 +31,6 @@ class BlogPostController extends Controller
         $data = $request->validated();
 
         $post = new BlogPost;
-        $post->category_id = $data['category_id'];
         $post->title = $data['title'];
         $post->slug = Str::slug($data['slug']);
         $post->content = $data['content'];
@@ -51,6 +50,7 @@ class BlogPostController extends Controller
         $post->user_id = Auth::user()->id;
 
         $post->save();
+        $post->categories()->attach($data['category_id']);
 
         return redirect('author/posts')->with('message', 'Blog Post Added Successfully');
 
@@ -69,7 +69,6 @@ class BlogPostController extends Controller
         $data = $request->validated();
 
         $post = BlogPost::find($post_id);
-        $post->category_id = $data['category_id'];
         $post->title = $data['title'];
         $post->slug = Str::slug($data['slug']);
         $post->content = $data['content'];
@@ -95,6 +94,8 @@ class BlogPostController extends Controller
         $post->user_id = Auth::user()->id;
 
         $post->update();
+
+        $post->categories()->sync($data['category_id']);
 
         return redirect('author/posts')->with('message', 'Blog Post Updated Successfully');
     }

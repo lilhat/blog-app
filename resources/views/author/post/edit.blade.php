@@ -31,14 +31,14 @@
 
                 <div class="mb-3">
                     <label for="">Category </label>
-                    <select name="category_id" required class="form-control">
-                            <option value="">-- Select Category --</option>
-                        @foreach ($category as $catitem)
-                            <option value="{{ $catitem->id }}" {{ $post->category_id == $catitem->id ? 'selected':'' }}>
+                    @foreach ($category as $catitem)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="category_id[]" value="{{ $catitem->id }}" id="category_{{ $catitem->id }}" {{ $post->categories->contains($catitem->id) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="category_{{ $catitem->id }}">
                                 {{ $catitem->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="mb-3">
                     <label for="">Title</label>
@@ -74,7 +74,7 @@
                 <h5 class="fw-bold">Status</h5>
                 <div class="row">
                     <div class="col-md-3 mb-3">
-                        <label for="">Status</label>
+                        <label for="">Hidden</label>
                         <input type="checkbox" name="status" {{ $post->status == '1' ? 'checked':'' }}>
                     </div>
                     <div class="col-md-6">
