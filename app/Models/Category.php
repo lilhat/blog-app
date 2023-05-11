@@ -18,7 +18,6 @@ class Category extends Model
         'meta_title',
         'meta_description',
         'meta_keyword',
-        'navbar_status',
         'status',
         'user_id',
 

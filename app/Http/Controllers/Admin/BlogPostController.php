@@ -31,7 +31,6 @@ class BlogPostController extends Controller
         $data = $request->validated();
 
         $post = new BlogPost;
-        // $post->category_id = $data['category_id'];
         $post->title = $data['title'];
         $post->slug = Str::slug($data['slug']);
         $post->content = $data['content'];
