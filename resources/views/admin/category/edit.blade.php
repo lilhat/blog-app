@@ -65,11 +65,7 @@
                 <h5 class="fw-bold">Status</h5>
                 <div class="row">
                     <div class="col-md-3 mb-3">
-                        <label for="">Navbar Status</label>
-                        <input type="checkbox" name="navbar_status" {{ $category->navbar_status == '1' ? 'checked':'' }}>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="">Status</label>
+                        <label for="">Hidden</label>
                         <input type="checkbox" name="status" {{ $category->status == '1' ? 'checked':'' }}>
                     </div>
                     <div class="col-md-6">

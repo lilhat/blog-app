@@ -17,9 +17,7 @@
                     <a class="nav-link" href="#">Link</a>
                 </li> --}}
                 @php
-                    $categories = App\Models\Category::where('navbar_status', '0')
-                        ->where('status', '0')
-                        ->get();
+                    $categories = App\Models\Category::where('status', '0')->get();
                 @endphp
                 @foreach ($categories as $catitem)
                     <li class="nav-item">
