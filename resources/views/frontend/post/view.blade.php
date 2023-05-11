@@ -36,6 +36,14 @@
                                 on {{ $post->created_at->format('d-m-Y') }}
                             </p>
                         </div>
+                        @if($related_post)
+                            <div class="card-footer">
+                                <h6>Related Post</h6>
+                                <a href="{{ url('section/'. $related_post->categories->first()->slug . '/' . $related_post->slug) }}">
+                                    <p>{{ $related_post->title }}</p>
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <hr class="mt-4">

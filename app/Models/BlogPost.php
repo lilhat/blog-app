@@ -43,4 +43,9 @@ class BlogPost extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    public function relatedBlogPost()
+    {
+        return $this->hasOne(RelatedBlogPost::class);
+    }
 }

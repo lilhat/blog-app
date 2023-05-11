@@ -14,7 +14,7 @@ class FrontendController extends Controller
     public function index()
     {
         $all_categories = Category::where('status','0')->get();
-        $latest_posts = BlogPost::where('status', '0')->orderBy('created_at', 'DESC')->get()->take(5);
+        $latest_posts = BlogPost::where('status', '0')->orderBy('created_at', 'DESC')->get()->take(4);
         return view('frontend.index', compact('all_categories', 'latest_posts'));
     }
 
@@ -52,9 +52,18 @@ class FrontendController extends Controller
                                 $query->where('categories.id', $category->id);
                             })->where('status', '0')
                             ->orderBy('created_at', 'DESC')
-                            ->take(5)
+                            ->take(4)
                             ->get();
-            return view('frontend.post.view', compact('post','latest_posts', 'category'));
+
+            if($post->relatedBlogPost)
+            {
+                $related_post = BlogPost::find($post->relatedBlogPost->id);
+
+            }
+            else{
+                $related_post = false;
+            }
+            return view('frontend.post.view', compact('post','latest_posts', 'category', 'related_post'));
 
         }
         else

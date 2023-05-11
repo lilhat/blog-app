@@ -60,7 +60,9 @@ class BlogPostFormRequest extends FormRequest
             ],
             'status' => [
                 'nullable'
-            ]
+            ],
+            'related_post_id' => 'nullable',
+
 
 
         ];

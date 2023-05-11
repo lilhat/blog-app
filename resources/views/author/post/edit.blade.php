@@ -71,6 +71,21 @@
                     <textarea name="meta_keyword" rows="3" class="form-control">{!! $post->meta_keyword !!}</textarea>
                 </div>
 
+                <h5 class="fw-bold">Related Post</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="related_post_id">Select Related Post</label>
+                            <select class="form-control" name="related_post_id" id="related_post_id">
+                                <option value="">-- Select --</option>
+                                @foreach($posts as $postitem)
+                                    <option value="{{ $postitem->id }}" {{ $post->relatedBlogPost ? 'selected' : '' }}>{{ $postitem->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <h5 class="fw-bold">Status</h5>
                 <div class="row">
                     <div class="col-md-3 mb-3">
