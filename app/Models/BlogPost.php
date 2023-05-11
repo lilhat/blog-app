@@ -13,7 +13,6 @@ class BlogPost extends Model
     protected $table = 'blog_posts';
 
     protected $fillable = [
-        'category_id',
         'title',
         'slug',
         'image',
@@ -25,9 +24,9 @@ class BlogPost extends Model
         'user_id'
     ];
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsToMany(Category::class, 'category_post');
     }
 
     public function user()

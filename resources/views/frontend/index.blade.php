@@ -81,10 +81,19 @@
                 @foreach ($latest_posts as $latest_post_item)
                     <div class="col-md-3">
                         <div class="card card-head p-3" style="height:130px;">
-                            <a href="{{ url('section/'.$latest_post_item->category->slug.'/'.$latest_post_item->slug) }}" class="text-decoration-none">
+                            <a href="{{ url('section/'.$latest_post_item->categories->first()->slug.'/'.$latest_post_item->slug) }}" class="text-decoration-none">
                                 <h6 class="extra-title"  style="height:35px;">{{ $latest_post_item->title }}</h6>
                             </a>
-                            <a class="text-dark text-decoration-none" href="{{ url('section/'.$latest_post_item->category->slug) }}"><p class="extra-cat">{{ $latest_post_item->category->name }}</p></a>
+                            <a class="text-dark text-decoration-none" href="{{ url('section/'.$latest_post_item->categories->first()->slug) }}">
+                                <p class="extra-cat">
+                                    @foreach ($latest_post_item->categories as $category)
+                                        <a class="text-dark text-decoration-none" href="{{ url('section/'.$category->slug) }}">{{ $category->name }}</a>
+                                        @if (!$loop->last)
+                                            |
+                                        @endif
+                                    @endforeach
+                                </p>
+                            </a>
                             <p class="post-meta">
                                 Posted by
                                 <a href="">{{ $latest_post_item->user->name }}</a>

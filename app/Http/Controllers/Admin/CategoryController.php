@@ -44,7 +44,7 @@ class CategoryController extends Controller
 
         $category->navbar_status = $request->navbar_status == true ? '1':'0';
         $category->status = $request->status == true ? '1':'0';
-        $category->created_by = Auth::user()->id;
+        $category->user_id = Auth::user()->id;
 
         $category->save();
 
@@ -85,7 +85,7 @@ class CategoryController extends Controller
 
         $category->navbar_status = $request->navbar_status == true ? '1':'0';
         $category->status = $request->status == true ? '1':'0';
-        $category->created_by = Auth::user()->id;
+        $category->user_id = Auth::user()->id;
 
         $category->update();
 

@@ -60,7 +60,14 @@
                         @foreach ($posts as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->category->name }}</td>
+                            <td>
+                                @foreach ($item->categories as $category)
+                                    {{ $category->name }}
+                                    @if (!$loop->last)
+                                    ,
+                                    @endif
+                                @endforeach
+                            </td>
                             <td>{{ $item->title }}</td>
                             <td>
                                 <img src="{{ asset('uploads/post/'.$item->image) }} " width="50px" height="50px" alt="img">

@@ -17,12 +17,17 @@ class FrontendController extends Controller
         $latest_posts = BlogPost::where('status', '0')->orderBy('created_at', 'DESC')->get()->take(5);
         return view('frontend.index', compact('all_categories', 'latest_posts'));
     }
+
     public function viewCategoryPost($category_slug)
     {
         $category = Category::where('slug', $category_slug)->where('status', 0)->first();
         if($category)
         {
-            $post = BlogPost::where('category_id', $category->id)->where('status', '0')->paginate(3);
+            $post = BlogPost::whereHas('categories', function ($query) use ($category) {
+                        $query->where('categories.id', $category->id);
+                    })
+                    ->where('status', '0')
+                    ->paginate(3);
             return view('frontend.post.index', compact('post','category'));
 
         }
@@ -37,8 +42,18 @@ class FrontendController extends Controller
         $category = Category::where('slug', $category_slug)->where('status', 0)->first();
         if($category)
         {
-            $post = BlogPost::where('category_id', $category->id)->where('slug', $post_slug)->where('status', '0')->first();
-            $latest_posts = BlogPost::where('category_id', $category->id)->where('status', '0')->orderBy('created_at', 'DESC')->get()->take(5);
+            $post = BlogPost::whereHas('categories', function ($query) use ($category) {
+                        $query->where('categories.id', $category->id);
+                    })
+                    ->where('slug', $post_slug)
+                    ->where('status', '0')
+                    ->first();
+            $latest_posts = BlogPost::whereHas('categories', function($query) use ($category) {
+                                $query->where('categories.id', $category->id);
+                            })->where('status', '0')
+                            ->orderBy('created_at', 'DESC')
+                            ->take(5)
+                            ->get();
             return view('frontend.post.view', compact('post','latest_posts', 'category'));
 
         }

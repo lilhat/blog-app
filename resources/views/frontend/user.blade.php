@@ -29,7 +29,7 @@
                 @forelse ($post as $postitem)
                     <div class="row">
                         <div class="col-md-8">
-                            <a href="{{ url('section/' . $postitem->category->slug . '/' . $postitem->slug) }}">
+                            <a href="{{ url('section/' . $postitem->categories->first()->slug . '/' . $postitem->slug) }}">
                                 <h3 class="post-title mt-4">{{ $postitem->title }}</h3>
                             </a>
                             <h6 class="post-content" style="max-lines:3;">{{ strip_tags($postitem->content) }}</h6>
@@ -70,7 +70,7 @@
                 @forelse ($comment->paginate(5) as $commentitem)
                     <div class="row">
                         <div class="col-md-8">
-                            <a href="{{ url('section/' . $commentitem->blogPost->category->slug . '/' . $commentitem->blogPost->slug) }}">
+                            <a href="{{ url('section/' . $commentitem->blogPost->categories->first()->slug . '/' . $commentitem->blogPost->slug) }}">
                                 <h5 class="post-title">{{ $commentitem->blogPost->title }}</h5>
                             </a>
                             @if($commentitem->parent_id > 0)

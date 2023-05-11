@@ -20,13 +20,13 @@ class Category extends Model
         'meta_keyword',
         'navbar_status',
         'status',
-        'created_by',
+        'user_id',
 
     ];
 
     public function blogPosts()
     {
-        return $this->hasMany(BlogPost::class, 'category_id');
+        return $this->hasMany(BlogPost::class, 'category_post');
     }
 
     public function user()

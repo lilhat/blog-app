@@ -22,7 +22,12 @@ return new class extends Migration
             $table->text('meta_keyword');
             $table->tinyInteger('navbar_status')->default('0');
             $table->tinyInteger('status')->default('0');
-            $table->integer('created_by');
+
+            $table->bigInteger('user_id')->unsigned();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

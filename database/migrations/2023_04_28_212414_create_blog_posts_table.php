@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('category_id')->unsigned();
-
-            $table->foreign('category_id')->references('id')->on('categories')
-                ->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('title');
             $table->string('slug');

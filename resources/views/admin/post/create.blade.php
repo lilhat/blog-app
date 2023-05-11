@@ -30,11 +30,14 @@
 
                 <div class="mb-3">
                     <label for="">Category </label>
-                    <select name="category_id" class="form-control">
-                        @foreach ($category as $catitem)
-                            <option value="{{ $catitem->id }}">{{ $catitem->name }}</option>
-                        @endforeach
-                    </select>
+                    @foreach ($category as $catitem)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="category_id[]" value="{{ $catitem->id }}" id="category_{{ $catitem->id }}">
+                            <label class="form-check-label" for="category_{{ $catitem->id }}">
+                                {{ $catitem->name }}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="mb-3">
                     <label for="">Title</label>

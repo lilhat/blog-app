@@ -25,8 +25,9 @@ class BlogPostFormRequest extends FormRequest
 
             'category_id' => [
                 'required',
-                'integer'
+                'array'
             ],
+            'category_id.*' => 'required|integer',
             'title' => [
                 'required',
                 'string',
