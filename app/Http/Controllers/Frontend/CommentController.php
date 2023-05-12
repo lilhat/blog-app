@@ -32,7 +32,7 @@ class CommentController extends Controller
                 date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
                 $commentable->comments()->save($comment);
-                if ($commentable->user_id !== Auth::user()->id) {
+                if ($commentable->user_id !== Auth::id()) {
                     $category = $commentable->categories->first();
                     $slug = '/section/' . $category->slug . '/' . $commentable->slug;
                     User::find($commentable->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
@@ -98,10 +98,11 @@ class CommentController extends Controller
                     date_default_timezone_set('Europe/London');
                     $comment->posted_at = date('Y-m-d h:i:s');
                     $commentable->comments()->save($comment);
-                    if ($comment->user_id !== Auth::user()->id) {
+                    $parent_comment = Comment::find($comment->parent_id);
+                    if ($parent_comment->user_id !== Auth::user()->id) {
                         $category = $commentable->categories->first();
                         $slug = '/section/' . $category->slug . '/' . $commentable->slug;
-                        User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                        User::find($parent_comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                     }
                     event(new CommentSuccess($comment->user->name));
                     return response()->json([
