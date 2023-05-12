@@ -10,9 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\Admin\BlogPostFormRequest;
 use Illuminate\Support\Str;
+use App\Services\TwitterService;
+
 
 class BlogPostController extends Controller
 {
+
+    protected $twitterService;
+
+    public function __construct(TwitterService $twitterService)
+    {
+        $this->twitterService = $twitterService;
+    }
     public function index()
     {
         $posts = BlogPost::all();
@@ -50,6 +59,8 @@ class BlogPostController extends Controller
 
         $post->save();
         $post->categories()->attach($data['category_id']);
+
+        $this->twitterService->postTweet($post);
 
         if (!empty($data['related_post_id'])) {
             $relatedPost = BlogPost::find($data['related_post_id']);
