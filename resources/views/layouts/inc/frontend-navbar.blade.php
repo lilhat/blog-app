@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm bg-white">
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm bg-white" aria-label="Navigation Menu" tabindex="0">
     <div class="container">
         <a href="/">
             <img src="{{ asset('assets/images/logo.png') }}" style="width:150px;" class="navbar-brand" alt="Logo">
@@ -13,9 +13,6 @@
                 <li class="nav-item">
                     <a class="nav-link px-lg-3 py-3 py-lg-4" aria-current="page" href="{{ url('/') }}">Home</a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li> --}}
                 @php
                     $categories = App\Models\Category::where('status', '0')->get();
                 @endphp
@@ -29,7 +26,7 @@
                 <li class="nav-item dropdown p-3">
 
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                        aria-expanded="false" aria-label="User menu">
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </a>
                     <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
@@ -83,7 +80,7 @@
                 @auth
                     <li class="nav-item dropdown py-3">
                         <a id="navbarDropdown" class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" v-pre>
+                            aria-haspopup="true" aria-expanded="false" aria-label="Notification Menu" v-pre>
                             <i class="fa fa-bell"></i>
                             <span
                                 class="badge badge-light bg-warning badge-xs">{{ auth()->user()->unreadNotifications->count() }}</span>
