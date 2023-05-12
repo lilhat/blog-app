@@ -70,8 +70,8 @@
                 @forelse ($comment->paginate(5) as $commentitem)
                     <div class="row">
                         <div class="col-md-8">
-                            <a href="{{ url('section/' . $commentitem->blogPost->categories->first()->slug . '/' . $commentitem->blogPost->slug) }}">
-                                <h5 class="post-title">{{ $commentitem->blogPost->title }}</h5>
+                            <a href="{{ url('section/' . $commentitem->commentable->categories->first()->slug . '/' . $commentitem->commentable->slug) }}">
+                                <h5 class="post-title">{{ $commentitem->commentable->title }}</h5>
                             </a>
                             @if($commentitem->parent_id > 0)
                                 <h6 class="opacity-50">Replying to: <a href="">{{ $commentitem->parentComment->user->name }}</a></h6>

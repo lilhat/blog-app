@@ -42,7 +42,6 @@ class CategoryController extends Controller
         $category->meta_description = $data['meta_description'];
         $category->meta_keyword = $data['meta_keyword'];
 
-        $category->navbar_status = $request->navbar_status == true ? '1':'0';
         $category->status = $request->status == true ? '1':'0';
         $category->user_id = Auth::user()->id;
 
@@ -83,7 +82,6 @@ class CategoryController extends Controller
         $category->meta_description = $data['meta_description'];
         $category->meta_keyword = $data['meta_keyword'];
 
-        $category->navbar_status = $request->navbar_status == true ? '1':'0';
         $category->status = $request->status == true ? '1':'0';
         $category->user_id = Auth::user()->id;
 

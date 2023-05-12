@@ -12,7 +12,7 @@ class Comment extends Model
 
     protected $table = 'comments';
     protected $fillable = [
-        'blog_post_id',
+        'commentable_id',
         'user_id',
         'content'
     ];
@@ -22,9 +22,9 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function blogPost()
+    public function commentable()
     {
-        return $this->belongsTo(BlogPost::class);
+        return $this->morphTo();
     }
 
     public function likes()

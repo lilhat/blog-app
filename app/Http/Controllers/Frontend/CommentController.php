@@ -22,23 +22,22 @@ class CommentController extends Controller
     public function store(CommentFormRequest $request)
     {
         if (Auth::check()) {
-            $post = BlogPost::where('id', $request->blog_post_id)
+            $commentable = BlogPost::where('id', $request->blog_post_id)
                 ->where('status', '0')
                 ->first();
-            if ($post) {
+            if ($commentable) {
                 $comment = new Comment();
                 $comment->content = $request->content;
                 $comment->user_id = Auth::user()->id;
-                $comment->blog_post_id = $request->blog_post_id;
                 date_default_timezone_set('Europe/London');
                 $comment->posted_at = date('Y-m-d h:i:s');
-                $comment->save();
-                if ($post->user_id !== Auth::user()->id) {
-                    $category = $post->categories->first();
-                    $slug = '/section/' . $category->slug . '/' . $post->slug;
-                    User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
+                $commentable->comments()->save($comment);
+                if ($commentable->user_id !== Auth::user()->id) {
+                    $category = $commentable->categories->first();
+                    $slug = '/section/' . $category->slug . '/' . $commentable->slug;
+                    User::find($commentable->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                 }
-                event(new CommentSuccess($post->title));
+                event(new CommentSuccess($commentable->title));
                 return response()->json([
                     'bool' => true,
                     'comment' => $comment,
@@ -88,21 +87,20 @@ class CommentController extends Controller
         if (Auth::check()) {
             $parent_comment = Comment::where('id', $request->parent_id)->first();
             if ($parent_comment) {
-                $post = BlogPost::where('id', $request->blog_post_id)
+                $commentable = BlogPost::where('id', $request->blog_post_id)
                     ->where('status', '0')
                     ->first();
-                if ($post) {
+                if ($commentable) {
                     $comment = new Comment();
                     $comment->content = $request->content;
                     $comment->parent_id = $request->parent_id;
                     $comment->user_id = Auth::user()->id;
-                    $comment->blog_post_id = $request->blog_post_id;
                     date_default_timezone_set('Europe/London');
                     $comment->posted_at = date('Y-m-d h:i:s');
-                    $comment->save();
+                    $commentable->comments()->save($comment);
                     if ($comment->user_id !== Auth::user()->id) {
-                        $category = $post->categories->first();
-                        $slug = '/section/' . $category->slug . '/' . $post->slug;
+                        $category = $commentable->categories->first();
+                        $slug = '/section/' . $category->slug . '/' . $commentable->slug;
                         User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                     }
                     event(new CommentSuccess($comment->user->name));
