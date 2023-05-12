@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\CommentLiked;
 use App\Notifications\CommentReplied;
+use App\Events\CommentSuccess;
 use Response;
 
 class CommentController extends Controller
@@ -37,6 +38,7 @@ class CommentController extends Controller
                     $slug = '/section/' . $category->slug . '/' . $post->slug;
                     User::find($post->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                 }
+                event(new CommentSuccess($post->title));
                 return response()->json([
                     'bool' => true,
                     'comment' => $comment,
@@ -103,6 +105,7 @@ class CommentController extends Controller
                         $slug = '/section/' . $category->slug . '/' . $post->slug;
                         User::find($comment->user_id)->notify(new CommentReplied(Auth::user()->name, $slug));
                     }
+                    event(new CommentSuccess($comment->user->name));
                     return response()->json([
                         'bool' => true,
                         'comment' => $comment,
