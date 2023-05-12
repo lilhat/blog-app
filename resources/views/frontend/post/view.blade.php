@@ -364,7 +364,7 @@
                     <div class="comment-container col-md-12 col-lg-10 col-xl-8">
                                             <hr class="mt-4">
                                             <div>
-                                                <div class="d-flex flex-start justify-content-between">
+                                                <div class="d-flex flex-start justify-content-between comment-main">
                                                     <div>
                                                         <a href="{{ url('user/' . Auth::id()) }}">
                                                             <h6 class="fw-bold text-primary mb-1">` + window
@@ -545,7 +545,7 @@
             success: function(res) {
                 var _html = `<div class="comment-container">
                                     <div class="reply" style="width:80%;margin-left:20%!important;">
-                                        <div class="d-flex mt-4 justify-content-between">
+                                        <div class="d-flex mt-4 justify-content-between comment-main">
                                             <div>
                                                 <a href="{{ url('user/' . Auth::id()) }}">
                                                     <h6 class="fw-bold text-primary mb-1">` + window.currentUser + `</h6>
