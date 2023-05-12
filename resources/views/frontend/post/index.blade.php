@@ -41,7 +41,7 @@
 
                         </div>
                         <div class="col-md-3 text-center m-auto">
-                            <img src="{{ asset('uploads/post/' . $postitem->image) }}" class="post-thumb">
+                            <img src="{{ asset('uploads/post/' . $postitem->image) }}" class="post-thumb" alt="Post thumbnail">
                         </div>
                     </div>
                     <!-- Divider-->

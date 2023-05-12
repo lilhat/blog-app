@@ -22,7 +22,7 @@
                 <h1 class="text-center" style="text-decoration:underline">{!! $post->title !!}</h1>
             </div>
             <div class="row gx-4 gx-lg-5 justify-content-center mb-4">
-                <img src="{{ asset('uploads/post/' . $post->image) }}" class="post-image">
+                <img src="{{ asset('uploads/post/' . $post->image) }}" class="post-image" alt="Post Image">
             </div>
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
