@@ -323,7 +323,7 @@
                     </a>
                     <p class="post-meta">
                         Posted by
-                        <a href="">{{ $latest_post_item->user->name }}</a>
+                        <a href="{{ url("user/". $latest_post_item->user->id) }}">{{ $latest_post_item->user->name }}</a>
                         on {{ $latest_post_item->created_at->format('d-m-Y') }}
                     </p>
                 </div>
